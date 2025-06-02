@@ -1,0 +1,1057 @@
+{
+  "projects": [
+    {
+      "id": 4699,
+      "name": "Evidentia",
+      "slug": "evidentia",
+      "description": "Evidentia is a decentralized finance protocol that enables users to mint local stablecoins (e.g., eUAH, eTRY, eVND) fully backed by tokenized government bonds, provided by collateral holders as NFTs. It serves  for bondholders and offering staking for yield generation. The platform integrates with decentralized and centralized exchanges, lending markets, and supports applications such as cross-border payments and e-commerce, maintaining stringent compliance.",
+      "repoLink": "https://github.com/evidentia-fi/Evidentia-Solana",
+      "country": "Portugal",
+      "presentationLink": "https://www.loom.com/share/262e6bc7ea1c43fc94841344d9ee16ce?sid=8df2097c-c7b5-4ac5-b342-938c7d6a980a",
+      "technicalDemoLink": "https://www.loom.com/share/a903aceeb4f644608132b838edc2821c?sid=f8454400-40f9-4f6c-967a-7f8ee51ae8f9",
+      "twitterHandle": "Evidentia_Fi",
+      "additionalInfo": "sol.evidentia.fi",
+      "ownerId": 55371,
+      "submittedAt": "2025-05-16T14:59:16.353Z",
+      "hackathonId": 4,
+      "isUniversityProject": false,
+      "universityName": null,
+      "likes": 10,
+      "comments": 1,
+      "image": {
+        "id": 17557,
+        "name": "Screenshot 2025-04-09 at 11.17.05.png",
+        "url": "https://static.narrative-violation.com/PAHUJJq3zGWdSEMA54XPH",
+        "mimetype": "image/png",
+        "size": 13506,
+        "uid": "PAHUJJq3zGWdSEMA54XPH"
+      },
+      "tracks": ["DeFi", "Stablecoins"],
+      "teamMembers": [
+        {
+          "id": 55371,
+          "username": "yezhov",
+          "aboutYou": "7 years in blockchain engineering. DeFi and cryptography research. Contributor to Wormhole, Near, PolygonID.",
+          "displayName": "Mike Yezhov",
+          "avatarUrl": "https://static.narrative-violation.com/Z_c32f9Tjyr4DSDy2oFTJ",
+          "isEditor": true
+        },
+        {
+          "id": 64617,
+          "username": "osvyr",
+          "aboutYou": "",
+          "displayName": "Oleksii Svyryd",
+          "avatarUrl": "",
+          "isEditor": true
+        }
+      ],
+      "prize": null,
+      "randomOrder": "-8993474063046705"
+    },
+    {
+      "id": 3161,
+      "name": "funOption",
+      "slug": "funoption",
+      "description": "Hyper Casual Option Trade Platform ",
+      "repoLink": "https://github.com/kosuke-eth/FunOption",
+      "country": "Japan",
+      "presentationLink": "https://www.loom.com/share/d6274190c002429c8deceaa4e448093c?sid=63ef6cfa-d9fa-47e0-89e2-e826ac4a2da3",
+      "technicalDemoLink": "https://www.loom.com/share/464e9fb5ed694f10b43d00828cfa84e3?sid=5e056b03-f587-470b-a952-b6212fdeb59f",
+      "twitterHandle": "FunOption_A",
+      "additionalInfo": "Our Old X account (https://x.com/funoption_fi) was flagged for sending too many DMs and has been temporarily suspended.\nWhat it does.\n\nFunOption — Hyper-Casual Crypto Options\n\n\nFunOption turns options trading into a game-like experience:\n\n1. Drag-and-Drop Canvas– Build a position by dragging option blocks onto the board. Strikes are picked point-by-point on an intuitive slider, so even first-timers can “stack” strategies in seconds.\n2. On-/Off-Chain Data Fusion – Each block merges live on-chain metrics from Solana (implied volatility, liquidity, open interest) with off-chain feeds—order-book depth, macro headlines, sentiment scores—so traders see the full picture in one place.\n3. AI Risk Buddy– Lightweight time-series models forecast price paths and translate greeks into plain English tips (“≈75 % chance to reach 3× payoff; suggest +1 protective put”).\n4. One-Swipe Settlement – Review, sign, and settle on-chain with a single swipe. Every trade awards XP and unlocks fee discounts, keeping the learning loop fun and rewarding.\n                      |\n\nBy removing complexity and adding real-time guidance, FunOption lowers the barrier for millions of crypto traders who want effective hedging without the typical options headache.\n",
+      "ownerId": 55534,
+      "submittedAt": "2025-05-11T14:25:08.399Z",
+      "hackathonId": 4,
+      "isUniversityProject": true,
+      "universityName": "Hosei University",
+      "likes": 0,
+      "comments": 0,
+      "image": {
+        "id": 12626,
+        "name": "FunOption-Logo.png",
+        "url": "https://static.narrative-violation.com/eFqvIcuGLtEqcc0rTcxod",
+        "mimetype": "image/png",
+        "size": 93718,
+        "uid": "eFqvIcuGLtEqcc0rTcxod"
+      },
+      "tracks": ["DeFi", "Consumer Apps", "AI"],
+      "teamMembers": [
+        {
+          "id": 55534,
+          "username": "AKO",
+          "aboutYou": "Im AK,Founder of FunOption.\nI often trade option and think Option UX is bad for Traders,\nSo I started FunOption to provide good ux for All Traders.",
+          "displayName": "AKOA",
+          "avatarUrl": "https://static.narrative-violation.com/ii96hw_CS4vQhsQig-qLZ",
+          "isEditor": true
+        },
+        {
+          "id": 54264,
+          "username": "Suke",
+          "aboutYou": "I have the passion to start a business",
+          "displayName": "Suke",
+          "avatarUrl": "https://static.narrative-violation.com/jjpZLu4nu7GrLRwLiU_F7",
+          "isEditor": true
+        },
+        {
+          "id": 47238,
+          "username": "Remikon",
+          "aboutYou": "Game and AI developer",
+          "displayName": "Remikon",
+          "avatarUrl": "https://static.narrative-violation.com/mS0iAAAEvj6s2woyVR6nd",
+          "isEditor": true
+        }
+      ],
+      "prize": null,
+      "randomOrder": "-8993339999002825"
+    },
+    {
+      "id": 3848,
+      "name": "Soliver",
+      "slug": "soliver",
+      "description": "Soliver is a cross-chain lending protocol that enables users to deposit ETH on Ethereum and borrow USDC on Solana—without selling or bridging their ETH.",
+      "repoLink": "https://github.com/Sushieai/soliver",
+      "country": "Japan",
+      "presentationLink": "https://youtu.be/UmHl251iT7Q",
+      "technicalDemoLink": "https://youtu.be/VmU-R74a9YI",
+      "twitterHandle": "alltimesushie",
+      "additionalInfo": null,
+      "ownerId": 41632,
+      "submittedAt": "2025-05-16T20:01:59.644Z",
+      "hackathonId": 4,
+      "isUniversityProject": false,
+      "universityName": null,
+      "likes": 0,
+      "comments": 0,
+      "image": {
+        "id": 18761,
+        "name": "soliver_white_bg_only.png",
+        "url": "https://static.narrative-violation.com/F2HONDHXk5WE6gMT6OoC1",
+        "mimetype": "image/png",
+        "size": 100071,
+        "uid": "F2HONDHXk5WE6gMT6OoC1"
+      },
+      "tracks": ["DeFi"],
+      "teamMembers": [
+        {
+          "id": 41632,
+          "username": "sushie",
+          "aboutYou": "- Crypto enthusiast since 2016\n- Jito Community Lead\n- Superteam Japan member\n- Ex Tradfi, miner and DeFi lover",
+          "displayName": "Sushie",
+          "avatarUrl": "https://static.narrative-violation.com/NXA5G0IZ5EIiTNMDxljK3",
+          "isEditor": true
+        }
+      ],
+      "prize": null,
+      "randomOrder": "-8981565951188613"
+    },
+    {
+      "id": 4959,
+      "name": "AuctionX",
+      "slug": "auctionx",
+      "description": "AuctionX is a decentralized auction platform designed for transparent and trustless bidding on both digital and physical items. Built with Web3 technologies, it allows users to create auctions, place bids using crypto (e.g. USDC), and verify ownership through wallet-based authentication (e.g. Solana wallet signatures). Key features include:\n\nDecentralized ownership & bidding: No middlemen—users interact directly with smart contracts.\n\nReal-time auctions: Live countdowns and dynamic bid updates.\n\nDigital/physical item support: NFTs, collectibles, or real-world assets.\n\nWallet login & signature auth: Secure login without passwords.\n\nOptional rewards/incentives: For active bidders or auction creators.\n\nAuctionX aims to bridge the gap between Web2 usability and Web3 transparency in online auctions.",
+      "repoLink": "https://github.com/David-CCrown/auction-x",
+      "country": "Nigeria",
+      "presentationLink": "https://www.loom.com/share/43c2ee9c637c4cf1a5fe3f3b261ce804",
+      "technicalDemoLink": "https://www.loom.com/share/d8a14875ee664464a64a6aba4ba03b1a?sid=bc3eeb18-c2c5-4202-a478-646e849424ff",
+      "twitterHandle": "_AuctionX",
+      "additionalInfo": "Live link - https://auction-x.vercel.app/\n\nWaitlist - https://auctionx-cqz3.vercel.app/coming-soon\n\nPitch Deck - https://docs.google.com/presentation/d/1TTMauUv82hJKtHjJoY16x8D1cwNsGkD6XkdVLSuA2vc/edit?usp=sharing",
+      "ownerId": 56338,
+      "submittedAt": "2025-05-17T02:11:52.599Z",
+      "hackathonId": 4,
+      "isUniversityProject": false,
+      "universityName": null,
+      "likes": 0,
+      "comments": 0,
+      "image": {
+        "id": 18367,
+        "name": "Screenshot from 2025-05-13 21-03-31.png",
+        "url": "https://static.narrative-violation.com/3TAFsbCn4GEP3lAarEb1D",
+        "mimetype": "image/png",
+        "size": 89675,
+        "uid": "3TAFsbCn4GEP3lAarEb1D"
+      },
+      "tracks": ["DeFi", "Consumer Apps"],
+      "teamMembers": [
+        {
+          "id": 56338,
+          "username": "A_demola",
+          "aboutYou": "I'm Ademola from Nigeria. A fullstack -backend heavy developer. I work with the following programming languages - Javascript/Typescript, Python, Rust and their frameworks.",
+          "displayName": "Ademola Oduntan",
+          "avatarUrl": "https://static.narrative-violation.com/oTjEkgy6kqH4ophOphABB",
+          "isEditor": true
+        }
+      ],
+      "prize": null,
+      "randomOrder": "-8965495088806328"
+    },
+    {
+      "id": 3004,
+      "name": "HYAPE FUN",
+      "slug": "hyape-fun",
+      "description": "https://hyape.fun\nA 3D multiplayer platform matchmaking game browser like fallguy (PC) /stumble-guy (mobile) + mario party system without installation and download in decentralised server. \nIt's full on-chain Ranked Matchmaking using Ephemeral Rollup by Magicblock.xyz ",
+      "repoLink": "https://github.com/dellwatson/hyape-bolt-solana",
+      "country": "Germany",
+      "presentationLink": "https://youtu.be/KfhatwHqGcU",
+      "technicalDemoLink": "https://youtu.be/cnWmZNIe_Y8",
+      "twitterHandle": "0xdellwatson",
+      "additionalInfo": "Simply access the game here: https://hyape.fun and play RANKED matchmaking \nto experience the on-chain game, it still using devnet for now. If it's laggy then it might be far from magicblock server.\nWe haven't got personal server from them, this will make player closer to the server.\n(⚠️Open it only after submission closed), Means we already update the latest⬆️\n\nWe have country theme based game mode:\n1. 🇮🇩 Eat crackers in borboudur\n2. 🇩🇪 Rolling Jägermeister -> Jägerbomb 🍻\n3. What's next? \n\n\nHere's intro about our founder Dale and Niels from Theras Labs (theras.xyz)\nhttps://youtu.be/yHy2W86s_3Y\n\nJoin into our community:\nhttps://t.me/theraslabs\nhttps://discord.gg/6tbmcVVmPC\nhttps://x.com/theras_labs\n\n\n\n\n\n\n\n",
+      "ownerId": 25603,
+      "submittedAt": "2025-05-16T03:15:46.696Z",
+      "hackathonId": 4,
+      "isUniversityProject": false,
+      "universityName": null,
+      "likes": 1,
+      "comments": 1,
+      "image": {
+        "id": 16110,
+        "name": "ChatGPT Image May 14, 2025, 12_00_17 PM.png",
+        "url": "https://static.narrative-violation.com/qFyM0ARxU6gA38mEqOZju",
+        "mimetype": "image/png",
+        "size": 168291,
+        "uid": "qFyM0ARxU6gA38mEqOZju"
+      },
+      "tracks": ["Gaming"],
+      "teamMembers": [
+        {
+          "id": 25603,
+          "username": "dellwatson",
+          "aboutYou": "9y full stack dev, smart contract (mainly evm), game dev, and ai-agent now. ----------\nhttps://github.com/dellwatson ---------\n\nex-PlanetIX <no.1 gameFi Polygon 2022 ---------\nex-iONIC deFi ---------\nex-Alcacor socialFi",
+          "displayName": "Dale Watson",
+          "avatarUrl": "https://static.narrative-violation.com/PsiIZVzFZ6-WoltQXqBF6",
+          "isEditor": true
+        },
+        {
+          "id": 55142,
+          "username": "groworpay",
+          "aboutYou": "Co-founder of HYAPE and @MemeBuddyMaster",
+          "displayName": "Charlie Parker",
+          "avatarUrl": "https://static.narrative-violation.com/kjeLAY4fFeTjpCsx0xAE4",
+          "isEditor": true
+        }
+      ],
+      "prize": null,
+      "randomOrder": "-8953938080602657"
+    },
+    {
+      "id": 2953,
+      "name": "Battl3z",
+      "slug": "battl3z",
+      "description": "We provide gamers with a seamless, non-intrusive skill-based NFT wagering overlay.",
+      "repoLink": "https://github.com/nerds-cooking/trinity",
+      "country": "United Kingdom",
+      "presentationLink": "https://www.loom.com/share/5438fc22bd3a4164a15bd851e58a2287?sid=48baf21a-d3c5-4804-9f08-06f3fc72ad3f",
+      "technicalDemoLink": "https://www.loom.com/share/1292e90ef7404a91ac1502f26b34523f?sid=2ea4bce7-a58a-40e5-8213-b36ab9aa0934",
+      "twitterHandle": null,
+      "additionalInfo": "https://github.com/nerds-cooking/glaze",
+      "ownerId": 50909,
+      "submittedAt": "2025-05-17T06:58:23.553Z",
+      "hackathonId": 4,
+      "isUniversityProject": false,
+      "universityName": null,
+      "likes": 0,
+      "comments": 0,
+      "image": {
+        "id": 4157,
+        "name": "Logo (1).png",
+        "url": "https://static.narrative-violation.com/FLhoVKGEq-Gf555s3jvmo",
+        "mimetype": "image/png",
+        "size": 276780,
+        "uid": "FLhoVKGEq-Gf555s3jvmo"
+      },
+      "tracks": ["Gaming", "Infrastructure", "Consumer Apps"],
+      "teamMembers": [
+        {
+          "id": 50909,
+          "username": "kingofthenorth",
+          "aboutYou": "...",
+          "displayName": "JRRR",
+          "avatarUrl": "",
+          "isEditor": true
+        },
+        {
+          "id": 64765,
+          "username": "jamie_nc",
+          "aboutYou": "Professional nerd",
+          "displayName": "Jamie NC",
+          "avatarUrl": "",
+          "isEditor": true
+        },
+        {
+          "id": 64768,
+          "username": "si__nc",
+          "aboutYou": "15+ years in software engineering\n8+ years experience in blockchain\nCreated & deployed one of first airdrop scripts on Tron to ~50k wallets",
+          "displayName": "si__nc",
+          "avatarUrl": "",
+          "isEditor": true
+        }
+      ],
+      "prize": null,
+      "randomOrder": "-8900731725580678"
+    },
+    {
+      "id": 3829,
+      "name": "Coinroll",
+      "slug": "coinroll",
+      "description": "Coinroll is a decentralized invoicing and payroll platform for freelancers and businesses. Built on Solana, it enables seamless crypto and fiat payments, invoice tracking, and streaming payouts via Streamflow. With zk compression and Mercuryo integration, it ensures fast, private, and compliant global compensation.",
+      "repoLink": "https://github.com/sukantg/coinroll",
+      "country": "Portugal",
+      "presentationLink": "https://www.loom.com/share/be6f0b625f3a495e9470a2eeb33ad0cd?sid=0bd6678f-f02a-4f9f-b5a3-34dcec1b0602",
+      "technicalDemoLink": "https://www.loom.com/share/df6551f171274cbab03506a44d265b08?sid=1ced4824-5ff0-40a5-aee1-06553c7b0d93",
+      "twitterHandle": "getcoinroll",
+      "additionalInfo": null,
+      "ownerId": 55841,
+      "submittedAt": "2025-05-16T08:49:09.151Z",
+      "hackathonId": 4,
+      "isUniversityProject": false,
+      "universityName": null,
+      "likes": 10,
+      "comments": 1,
+      "image": {
+        "id": 13055,
+        "name": "coinroll (1).png",
+        "url": "https://static.narrative-violation.com/euv41x4V9REIEYTU9hI_e",
+        "mimetype": "image/png",
+        "size": 14600,
+        "uid": "euv41x4V9REIEYTU9hI_e"
+      },
+      "tracks": ["DeFi", "Consumer Apps", "Stablecoins"],
+      "teamMembers": [
+        {
+          "id": 55841,
+          "username": "cryptozuki",
+          "aboutYou": "Developer and Youtuber",
+          "displayName": "Zuki G",
+          "avatarUrl": "https://static.narrative-violation.com/rkgT6w8Ny3A3-TVHx-Rwk",
+          "isEditor": true
+        }
+      ],
+      "prize": null,
+      "randomOrder": "-8894043811832914"
+    },
+    {
+      "id": 5065,
+      "name": "Utopia",
+      "slug": "utopia",
+      "description": "Utopia is a no-code, decentralized voting platform built on the Solana blockchain that solves the widespread distrust, complexity, and high cost of traditional voting systems. In a country like Sierra Leone—where even student elections or reality show votes can trigger conflict—Utopia empowers universities, organizations, and event managers to launch transparent, tamper-proof elections without technical barriers. With features like self-serve poll creation, configurable voting rules, pay-to-vote options, and real-time on-chain results, Utopia makes every vote count—instantly, anonymously, and verifiably. More than just a product, it’s a movement toward restoring trust in democratic processes.",
+      "repoLink": "https://github.com/stElmitchay/voting-applcation",
+      "country": "Sierra Leone",
+      "presentationLink": "https://www.loom.com/share/a3c99ddee0d8442b8cdb6495fd29bfd6?sid=b442c693-4176-4b84-97a5-8b24319f4011",
+      "technicalDemoLink": "https://www.loom.com/share/a3c99ddee0d8442b8cdb6495fd29bfd6?sid=b442c693-4176-4b84-97a5-8b24319f4011",
+      "twitterHandle": null,
+      "additionalInfo": null,
+      "ownerId": 155,
+      "submittedAt": "2025-05-17T06:14:01.350Z",
+      "hackathonId": 4,
+      "isUniversityProject": false,
+      "universityName": null,
+      "likes": 1,
+      "comments": 1,
+      "image": {
+        "id": 18973,
+        "name": "Screenshot 2025-05-17 at 03.53.31.png",
+        "url": "https://static.narrative-violation.com/ExZtJS_koRIbcdK40hID_",
+        "mimetype": "image/png",
+        "size": 296636,
+        "uid": "ExZtJS_koRIbcdK40hID_"
+      },
+      "tracks": ["Consumer Apps"],
+      "teamMembers": [
+        {
+          "id": 155,
+          "username": "Mitch",
+          "aboutYou": "I am THE MAN THE MYTH THE LEGEND",
+          "displayName": "Mitch",
+          "avatarUrl": "https://static.narrative-violation.com/To-QHlp23Jkqonthu5vsL",
+          "isEditor": true
+        },
+        {
+          "id": 64911,
+          "username": "andriyuhhh",
+          "aboutYou": "",
+          "displayName": "Andrea Bee",
+          "avatarUrl": "",
+          "isEditor": false
+        }
+      ],
+      "prize": null,
+      "randomOrder": "-8892688278727348"
+    },
+    {
+      "id": 3412,
+      "name": "Something.cool & Cooldex.cool",
+      "slug": "something.cool-and-cooldex.cool",
+      "description": "Problem:\nDEX trading today charges 0.25–5% in fees on every trade — then just adds that money back into liquidity pools. On Solana alone, over $1.4B has been locked into liq.pools of tokens that didn’t survive 2 hours. But those fees could’ve been redistributed differently — creating incentive for holders to stay, without placing additional costs on traders\n\nSolution:\nCoolDEX is the first-ever DEX that auto-distributes fees to real-time holders of the traded token — with no staking, no locking, and no dev-side control. Just hold = get rewarded.\n\nFor the first time in Web3, trading volume directly benefits the community behind the token — not just LPs.\n\nRight now, only flippers win. \nWith our tech, projects gain a base of loyal holders — reducing sell pressure and giving traders more confidence to play.\nBoth sides win. No value extraction.\n\nCEO - t.me/LEOresearch",
+      "repoLink": "https://github.com/fablee1/coolpad",
+      "country": "Latvia",
+      "presentationLink": "https://www.loom.com/share/6f5631078c7840a5bf93589e14e68cb7?sid=3e776ea0-bb19-4e9d-94af-9cae8f4b2c30",
+      "technicalDemoLink": "   https://www.loom.com/share/ea9203a07a16410bb8bd37bba8536850?sid=bf3b302a-73a2-4a88-bf55-21a391ed9a5e",
+      "twitterHandle": "somethingco_ol",
+      "additionalInfo": "Imagine you’re trading a new token on Solana. You buy. You hold. You help build the community. \nVolume goes up. Traders flow in. Everyone pays DEX fees.\n\nBut none of those fees reward you.\nNot your community. Not other holders.\nThey just get added back to the LP — or go to people staking a completely different launchpad token.\n\nYou contribute. You hold.\nBut you get nothing back.\n\nFair? We don’t think so.\n\nSo we built CoolDEX — the first-ever DEX where trading fees can go to real-time holders of the token being traded, not just LPs.\nNo staking. No locking. No dev control.\nJust automated distribution after every trade — fully on-chain, built on SPL.\nJust hold tokens in any wallet (like Phantom), and get rewarded.\n\nHow it works:\nTokens launch via Somethingcool, where creators configure how the DEX fee splits: real-time holders, LPs, burn — in any ratio. After the bonding curve, liquidity migrates to CoolDEX, and fee distribution activates automatically.\n\nWe’re not just building a new DEX.\nWe’re rewriting the incentive structure behind DEX trading.\n\n📎 Docs: https://docs.something.cool/\n🎥 1-min explainer: https://x.com/somethingco_ol/status/1882461562507829362\n👤 CEO: t.me/LEOresearch\n\nCommunity co-ownership projects and PVE aren’t just ideas anymore — we made them real.\nFirst time in Web3.\nExclusively on Solana.\n",
+      "ownerId": 60742,
+      "submittedAt": "2025-05-15T04:31:08.528Z",
+      "hackathonId": 4,
+      "isUniversityProject": false,
+      "universityName": null,
+      "likes": 3,
+      "comments": 0,
+      "image": {
+        "id": 4510,
+        "name": "Logo-1 (2).png",
+        "url": "https://static.narrative-violation.com/9JYgcLXiBUHNiFHvcwc40",
+        "mimetype": "image/png",
+        "size": 182976,
+        "uid": "9JYgcLXiBUHNiFHvcwc40"
+      },
+      "tracks": ["DeFi", "Infrastructure", "Consumer Apps"],
+      "teamMembers": [
+        {
+          "id": 64157,
+          "username": "mrpayer",
+          "aboutYou": "At NFD, I’m responsible for developing the logical structure of product operations, testing new features, and supporting NFD product users. In Web2, I have over 10 years of experience as a system administrator.",
+          "displayName": "Mr.Payer",
+          "avatarUrl": "https://static.narrative-violation.com/m1sQ2JoB7AknYK9MCQIA5",
+          "isEditor": true
+        },
+        {
+          "id": 64186,
+          "username": "mntnfd",
+          "aboutYou": "For the better part of 6 years I have been actively involved in Web3 life. For more than 3 years my team and I have been building NFD and trying to improve the Web3 space.",
+          "displayName": "Minter",
+          "avatarUrl": "https://static.narrative-violation.com/IovpGLVZD-HmJCq_bmCol",
+          "isEditor": true
+        },
+        {
+          "id": 60796,
+          "username": "hedonismv",
+          "aboutYou": "I am TS, GoLang. Fullstack Developer & Tech/Team Lead.\nFullstack Dev  - Belarusian language learning startup Mova\nCEO - Taswiq web studio\nMobile app for schedule at BSEU for a grant.\nWinner of Minsk Product Dev hackathon and participant of Paralect startup summer.",
+          "displayName": "Vitalik Hedo",
+          "avatarUrl": "https://static.narrative-violation.com/-JqV2I8CNI_cGvNFo2zY6",
+          "isEditor": true
+        },
+        {
+          "id": 60797,
+          "username": "fablee",
+          "aboutYou": "CTO & Co-founder of NFD. Fullstack developer with 5+ years of experience building high-performance, high-load systems. Specialized in solving complex technical challenges and delivering production-grade products.",
+          "displayName": "FaBLee",
+          "avatarUrl": "https://static.narrative-violation.com/vOPabxruaVJerC_-_RZ9W",
+          "isEditor": true
+        },
+        {
+          "id": 60742,
+          "username": "Leo_NFD",
+          "aboutYou": "A few words about the NFD team:\n- fully staffed team of 20+ people\n- 3+ years in crypto\n- 3 successfully launched projects (Combine software, NFD guide platform, NFD TG Trading bots).\nFor the past 7 months, we've been working on something.cool & cooldex.cool",
+          "displayName": "Leo_NFD",
+          "avatarUrl": "https://static.narrative-violation.com/gicYVciHdN7jFuv3Ckx-i",
+          "isEditor": true
+        },
+        {
+          "id": 54275,
+          "username": "viviborderline",
+          "aboutYou": "Prev. MA owner, 8figs revenue generated for clients. Attention, funnels and retention are my passion\n\nHelped 10 NFT projects to sell-out as CMO / BD\n\nlove snowboarding, ketchup and build cool things with NFD team",
+          "displayName": "Vladislav",
+          "avatarUrl": "https://static.narrative-violation.com/Eou0b1aNe81cQGUxHIs-B",
+          "isEditor": true
+        },
+        {
+          "id": 64151,
+          "username": "Kunak",
+          "aboutYou": "Ux.Ui designer | Pixel shifter | NFD team",
+          "displayName": "Kunak",
+          "avatarUrl": "https://static.narrative-violation.com/E4yJLQgJ5XVDv5QTbCJMq",
+          "isEditor": false
+        },
+        {
+          "id": 64152,
+          "username": "RealPeha",
+          "aboutYou": "Dev",
+          "displayName": "Stas",
+          "avatarUrl": "https://static.narrative-violation.com/yRFSCcbZmR2CO3g7RCyV9",
+          "isEditor": true
+        },
+        {
+          "id": 60908,
+          "username": "zeroxartem",
+          "aboutYou": "I have huge background in degen trading, crypto marketing, and SMM. I’m also deeply familiar with product strategy and user engagement mechanics — from concept to launch.",
+          "displayName": "Artem",
+          "avatarUrl": "https://static.narrative-violation.com/V0KRFWgrGPFh7QGNVn_a6",
+          "isEditor": false
+        }
+      ],
+      "prize": null,
+      "randomOrder": "-8889419272687279"
+    },
+    {
+      "id": 4107,
+      "name": "TokenUs",
+      "slug": "tokenus",
+      "description": "TokenUs is a blockchain-based video sharing platform that allows users to mint, list, trade, and manage video NFTs.\nIt integrates AI-powered video similarity detection to ensure content uniqueness before minting.\nTokenUs unifies content authentication, NFT ownership, and marketplace functionality in a single system.",
+      "repoLink": "https://github.com/Growth-and-Start/TokenUs_FE",
+      "country": "Korea South",
+      "presentationLink": "https://www.loom.com/share/ac70fcb727e24c11a857a88073e65a13?t=1&sid=962a2b6d-3ced-4425-966f-f6437aa9d320",
+      "technicalDemoLink": "https://youtu.be/-DNyTZ6-MAE",
+      "twitterHandle": null,
+      "additionalInfo": null,
+      "ownerId": 61133,
+      "submittedAt": "2025-05-17T01:08:02.532Z",
+      "hackathonId": 4,
+      "isUniversityProject": true,
+      "universityName": "Ewha Woman's University",
+      "likes": 0,
+      "comments": 0,
+      "image": {
+        "id": 14751,
+        "name": "logo.png",
+        "url": "https://static.narrative-violation.com/CT1c49uSPo8hBjJA2yHSu",
+        "mimetype": "image/png",
+        "size": 38220,
+        "uid": "CT1c49uSPo8hBjJA2yHSu"
+      },
+      "tracks": ["Consumer Apps"],
+      "teamMembers": [
+        {
+          "id": 61133,
+          "username": "Jimin",
+          "aboutYou": "I am Seo Jimin, vice president of EWHA-CHAIN from South Korea.",
+          "displayName": "Jimin",
+          "avatarUrl": "https://static.narrative-violation.com/76U4d3Q-h-5xwHw-gVTHv",
+          "isEditor": true
+        },
+        {
+          "id": 63084,
+          "username": "Hasun",
+          "aboutYou": "",
+          "displayName": "Hasun",
+          "avatarUrl": "",
+          "isEditor": true
+        },
+        {
+          "id": 63156,
+          "username": "k10_kwy",
+          "aboutYou": "A uni student, currently majoring in CS. I design and code Dapps. I'm also interested in Edge Computing and Wireless Networks.",
+          "displayName": "Wonyeong",
+          "avatarUrl": "https://static.narrative-violation.com/5y57IU7Om5gK43qnR-1bi",
+          "isEditor": true
+        }
+      ],
+      "prize": null,
+      "randomOrder": "-8867297416188125"
+    },
+    {
+      "id": 4014,
+      "name": "HeySolana",
+      "slug": "heysolana",
+      "description": "AI Voice Powered Assistant to get things done with Solana Dapps",
+      "repoLink": "https://github.com/UseHeySolana/HeySolanaWallet",
+      "country": "Nigeria",
+      "presentationLink": "https://youtu.be/nBciId0bSVI",
+      "technicalDemoLink": "https://www.loom.com/share/beb6152953e1448e9187e6cb99eb2160?sid=cd133378-fff5-4521-bee5-71398e72add9",
+      "twitterHandle": "useHeysolana",
+      "additionalInfo": "Submitted the application to the Solana Mobile Dapp Store\n\n\nApp NFT: 64KH27ttA41YfrMTVG4XDK6xs7zENs5PqhhpKi1MraX2",
+      "ownerId": 19714,
+      "submittedAt": "2025-05-16T21:54:49.327Z",
+      "hackathonId": 4,
+      "isUniversityProject": false,
+      "universityName": null,
+      "likes": 1,
+      "comments": 0,
+      "image": {
+        "id": 13970,
+        "name": "logo-removebg-preview (1).png",
+        "url": "https://static.narrative-violation.com/VzS1CywxVQjOvwtTPh8QD",
+        "mimetype": "image/png",
+        "size": 175256,
+        "uid": "VzS1CywxVQjOvwtTPh8QD"
+      },
+      "tracks": ["Consumer Apps", "AI"],
+      "teamMembers": [
+        {
+          "id": 13030,
+          "username": "Moyinthegrait",
+          "aboutYou": "I’m a product designer focused on building meaningful Web3 experiences. Over the years, I’ve designed a range of blockchain products from payment tools to marketplaces, including several on Solana. My goal is always the same: make powerful tech feel simple, useful and accessible to real people.",
+          "displayName": "Moyin",
+          "avatarUrl": "https://static.narrative-violation.com/YqDDSl_wdoiO7eYI1qZpw",
+          "isEditor": true
+        },
+        {
+          "id": 19714,
+          "username": "maskyray",
+          "aboutYou": "Create all Codes",
+          "displayName": "Moses",
+          "avatarUrl": "",
+          "isEditor": true
+        }
+      ],
+      "prize": null,
+      "randomOrder": "-8858287927381665"
+    },
+    {
+      "id": 3960,
+      "name": "Tita Flow",
+      "slug": "tita-flow",
+      "description": "Tita Flow is a configurable fundraising platform built to support a wide range of fundraising use cases - from personal causes to community-driven campaigns and startup fundraising.",
+      "repoLink": "https://github.com/ANTONINEUTRON/tita_flow",
+      "country": "Nigeria",
+      "presentationLink": "https://www.loom.com/share/de885ca6355a41afbf466c3d159fb352?sid=17c4f0df-9979-4c21-b28c-7bb47b4c0f4a",
+      "technicalDemoLink": "https://youtu.be/IPCCXZ2CmO0?si=Vl1BsXJ13tSADKcg",
+      "twitterHandle": "titaflow_",
+      "additionalInfo": "",
+      "ownerId": 26790,
+      "submittedAt": "2025-05-17T01:26:08.282Z",
+      "hackathonId": 4,
+      "isUniversityProject": false,
+      "universityName": null,
+      "likes": 0,
+      "comments": 0,
+      "image": {
+        "id": 14092,
+        "name": "titalogo.jpg",
+        "url": "https://static.narrative-violation.com/y13V6wYs38QNYVInvIEtY",
+        "mimetype": "image/jpeg",
+        "size": 75145,
+        "uid": "y13V6wYs38QNYVInvIEtY"
+      },
+      "tracks": ["DeFi", "Consumer Apps"],
+      "teamMembers": [
+        {
+          "id": 26790,
+          "username": "antonineutron",
+          "aboutYou": "Interested in building solutions that will lead to a better society and the world at large",
+          "displayName": "Antoni Neutron",
+          "avatarUrl": "https://static.narrative-violation.com/UAPBST18QHgmPKcvQ5gbh",
+          "isEditor": true
+        },
+        {
+          "id": 40107,
+          "username": "armzod",
+          "aboutYou": "UI/UX Designer, Brand Identity Strategies and Graphic Designer",
+          "displayName": "Muhammad Ziqrullah",
+          "avatarUrl": "https://static.narrative-violation.com/EWKEUdpugmpoy0w-T5E0a",
+          "isEditor": true
+        },
+        {
+          "id": 47424,
+          "username": "JoshuaAbel68",
+          "aboutYou": "Full time web3 | KOL",
+          "displayName": "MiroCrypto",
+          "avatarUrl": "https://static.narrative-violation.com/GM3JgteQZbB-Y6oq_ecV1",
+          "isEditor": true
+        }
+      ],
+      "prize": null,
+      "randomOrder": "-8814927438311714"
+    },
+    {
+      "id": 5030,
+      "name": "Next Man Up Daily Fantasy Sports",
+      "slug": "next-man-up-daily-fantasy-sports",
+      "description": "Next Man Up Daily Fantasy Sports is a decentralized fantasy sports app on Solana where users enter skill-based prop bets, with funds managed through isolated liquidity pools for each stat line. The fully on-chain system handles entry, result publishing, and claim settlement with a fast, non-custodial UI. While the current version excludes NFTs, upcoming features will introduce NFT-based betting slips and a secondary market for hedging or trading picks. Users can also explore their wallet balances, view coin analytics, and trade tokens via Jupiter—all within the same platform.\n",
+      "repoLink": "https://github.com/nhowze/ici-daily-fantasy-smart-contract",
+      "country": "United States",
+      "presentationLink": "https://www.loom.com/share/d39fc43c5baa4bb49e6d6bb510897df7?sid=b7a1d68d-f764-4e77-9ba9-a6c4cbcbaf9c",
+      "technicalDemoLink": "https://youtu.be/0ix89Gctv1M",
+      "twitterHandle": null,
+      "additionalInfo": "Website: https://nextmanup.io/\n\nThe current version of Next Man Up includes a full Solana smart contract and frontend for decentralized fantasy prop betting. Features like wallet-based entry, on-chain claim settlement, and stat-specific liquidity pools are fully implemented. Upcoming features include NFT-based pick receipts and secondary market trading for hedging. Users can also view wallet balances, coin analytics, and trade via Jupiter—all within the same UI.\n\n\nReact JS front end: https://github.com/nhowze/ici-daily-fantasy-reactJS\nExpress Server: https://github.com/nhowze/ici-daily-fantasy-middleware\nSmart Contract: https://github.com/nhowze/ici-daily-fantasy-smart-contract",
+      "ownerId": 58991,
+      "submittedAt": "2025-05-17T06:43:44.108Z",
+      "hackathonId": 4,
+      "isUniversityProject": false,
+      "universityName": null,
+      "likes": 0,
+      "comments": 0,
+      "image": {
+        "id": 18957,
+        "name": "logo.6614d7c9b708dc24193530dd4d1de597.png",
+        "url": "https://static.narrative-violation.com/4_JmXlwWSZDNxppuqzH6X",
+        "mimetype": "image/png",
+        "size": 1216,
+        "uid": "4_JmXlwWSZDNxppuqzH6X"
+      },
+      "tracks": ["DeFi", "Gaming", "Consumer Apps"],
+      "teamMembers": [
+        {
+          "id": 58991,
+          "username": "nhowze",
+          "aboutYou": "Full-stack engineer (8+ yrs) skilled in JS, Rust, Go, PHP & Python. AWS/Azure certified. Building Web3 apps on Solana with a focus on fantasy sports & betting. Passionate about sports data, smart contracts, and scalable cloud systems.",
+          "displayName": "nhowze",
+          "avatarUrl": "https://static.narrative-violation.com/r29WVCcrSCzUCbtGtL5V_",
+          "isEditor": true
+        }
+      ],
+      "prize": null,
+      "randomOrder": "-8808227886225501"
+    },
+    {
+      "id": 4339,
+      "name": "GOING",
+      "slug": "going",
+      "description": "Decentralized Marketplace:\nAddressing fees, privacy, and centralization with Web3 technology\n",
+      "repoLink": "https://github.com/SergioAriel/going",
+      "country": "Argentina",
+      "presentationLink": "https://youtu.be/1_WgyJBItzw",
+      "technicalDemoLink": "https://www.youtube.com/watch?v=KCRissdo1IA&ab_channel=SergioSolis",
+      "twitterHandle": "going_market",
+      "additionalInfo": null,
+      "ownerId": 63808,
+      "submittedAt": "2025-05-17T05:13:18.376Z",
+      "hackathonId": 4,
+      "isUniversityProject": false,
+      "universityName": null,
+      "likes": 0,
+      "comments": 0,
+      "image": {
+        "id": 15654,
+        "name": "goingLogo.png",
+        "url": "https://static.narrative-violation.com/woR2Pcx2Jm2ss2_x0i4Gc",
+        "mimetype": "image/png",
+        "size": 251100,
+        "uid": "woR2Pcx2Jm2ss2_x0i4Gc"
+      },
+      "tracks": ["Consumer Apps", "Stablecoins", "AI"],
+      "teamMembers": [
+        {
+          "id": 63808,
+          "username": "serarisol",
+          "aboutYou": "Full Stack Developer Web3",
+          "displayName": "Sergio Ariel Solis",
+          "avatarUrl": "",
+          "isEditor": true
+        }
+      ],
+      "prize": null,
+      "randomOrder": "-8806485101938280"
+    },
+    {
+      "id": 3306,
+      "name": "Paystream",
+      "slug": "paystream-1",
+      "description": "PayStream is a peer-to-peer DeFi lending protocol that connects lenders and borrowers directly, offering higher returns to lenders and cheaper loans to borrowers while ensuring all funds remain actively earning.\n\nFor more info, read at docs.paystream.finance",
+      "repoLink": "https://github.com/PaystreamFinance/paystream-t3",
+      "country": "India",
+      "presentationLink": "https://youtu.be/49tNjT2WQyU",
+      "technicalDemoLink": "https://www.loom.com/share/19bec757353940418efd31477917d2c6?sid=7817752b-3be5-40ae-839e-35deda06280c",
+      "twitterHandle": "paystreamlabs",
+      "additionalInfo": "We are already live on mainnet beta- https://paystream.finance\nDeck-https://www.figma.com/deck/zrGRLsD6hj8E2mdP2Stq1W/PayStream?node-id=6-422&t=YAWHwNoE5goxfuMz-1\nDocs- docs.paystream.finance\n\nThe repo mainly consists of our front-end integration via the SDK \nthat can be checked at- https://www.npmjs.com/package/@meimfhd/paystream-v1\n",
+      "ownerId": 60432,
+      "submittedAt": "2025-05-17T04:06:52.802Z",
+      "hackathonId": 4,
+      "isUniversityProject": false,
+      "universityName": null,
+      "likes": 3,
+      "comments": 1,
+      "image": {
+        "id": 4387,
+        "name": "PFP.jpg",
+        "url": "https://static.narrative-violation.com/VG8mxc5m-bi8Isev9egdm",
+        "mimetype": "image/jpeg",
+        "size": 151188,
+        "uid": "VG8mxc5m-bi8Isev9egdm"
+      },
+      "tracks": ["DeFi", "Infrastructure", "Stablecoins"],
+      "teamMembers": [
+        {
+          "id": 60432,
+          "username": "khoo",
+          "aboutYou": "Founder of @Paystreamlabs. Previously built @alrisagent. Ex-EVM security researcher at Shieldify (audited Lido, Tadle, TempleGold) and independent auditor at Sherlock and Codehawks.",
+          "displayName": "Maushish",
+          "avatarUrl": "https://static.narrative-violation.com/0h66o9_viEx9nwZ6lFm5M",
+          "isEditor": true
+        },
+        {
+          "id": 26017,
+          "username": "alok",
+          "aboutYou": "An undergraduate computer science engineering student, who likes to build websites/apps/APIs and interested in blockchain. Proficient in TypeScript, Rust, and Linux/CLI along with other tools, databases. ",
+          "displayName": "Alok",
+          "avatarUrl": "https://static.narrative-violation.com/rtAwBtwGempmWjgcIxGdR",
+          "isEditor": true
+        },
+        {
+          "id": 60439,
+          "username": "shreyansh123",
+          "aboutYou": "AI researcher ,  deploying intelligent agents across fields  . I have worked on various end-to-end AI-driven crypto solutions . Proficient in building ai agents and evals for ai systems .",
+          "displayName": "shreyansh",
+          "avatarUrl": "https://static.narrative-violation.com/D8MJVVky147Vz_sMFdj9Z",
+          "isEditor": true
+        },
+        {
+          "id": 3634,
+          "username": "maddestfhd",
+          "aboutYou": "Founding Solana protocol engineer with 1.5 years of experience in Rust and Solana, and over 3 years as a full-stack developer. Member of SuperteamIN. Previously founded Feather Labs and AdXchain.",
+          "displayName": "Fhd",
+          "avatarUrl": "https://static.narrative-violation.com/cUOMqL5b_HE5Y76qwF-E-",
+          "isEditor": true
+        }
+      ],
+      "prize": null,
+      "randomOrder": "-8745813301067184"
+    },
+    {
+      "id": 3878,
+      "name": "Pathfinders: Storybook",
+      "slug": "pathfinders:-storybook",
+      "description": "A Storybook experience optimized for gamers on SOL. Designed to tap into the core of what made NFTs fun, this experience allows holders to mint a soulbound NFT, take it on a choose-your-own-adventure story in five chapters, while watching it evolve and change based on decisions made. Every element of this experience is designed for Web3: with game loops involving trait-acquisition and our first experiment in a broader Living NFT concept.\n\nBreathing life into NFTs. Brought to you by Pathfinders.",
+      "repoLink": "https://github.com/ProjectPathfinders/storybook-mint",
+      "country": "United Kingdom",
+      "presentationLink": "https://www.loom.com/share/369040f6a1c046338715c34ec3d44e77",
+      "technicalDemoLink": "https://www.loom.com/share/ad2669326ea7496e8e89dd82c1333f5c",
+      "twitterHandle": "Pathfinders__",
+      "additionalInfo": "https://colosseum.pathfinders.gg/\nhttps://pathfinders.gg/\n\nHow to play?\n\nTo play Pathfinders: Storybook visit the first link above. On the site you can mint a soulbound Pathfinder for 0.2 SOL to start your journey!\n\nA Note on Development\n\nLast year we did spin up a very simple proof-of-concept of Ch. 1 of our Storybook. This was done in late Q4 just after our mint and was then put on the back-burner.\n\nHowever, using the Colosseum as our motivation over the last two months we have spun that simple demo experience into a full game. Over 80% of the work for this game, and almost all core features have been designed and built in the Colosseum period.\n\nIn particular, during this period we built: a soulbound NFT system, a wardrobe, a log system, and four out of five of the core chapters of the game. In essence, we've taken the game from concept to end-product at breakneck pace. We've told a complete story with our IP and we hope you enjoy it!",
+      "ownerId": 59823,
+      "submittedAt": "2025-05-16T12:59:14.161Z",
+      "hackathonId": 4,
+      "isUniversityProject": false,
+      "universityName": null,
+      "likes": 0,
+      "comments": 0,
+      "image": {
+        "id": 13275,
+        "name": "LOGO-P ver3.png",
+        "url": "https://static.narrative-violation.com/0p5DpEfwQ-oAHGEwrrEDp",
+        "mimetype": "image/png",
+        "size": 102231,
+        "uid": "0p5DpEfwQ-oAHGEwrrEDp"
+      },
+      "tracks": ["Gaming"],
+      "teamMembers": [
+        {
+          "id": 62952,
+          "username": "chinkeeyong",
+          "aboutYou": "Arte Non Fortuna - chinkeeyong.com",
+          "displayName": "CKY",
+          "avatarUrl": "https://static.narrative-violation.com/lVK0ScrEh7hs4IHFLrMsO",
+          "isEditor": true
+        },
+        {
+          "id": 64094,
+          "username": "muimooi",
+          "aboutYou": "2D illustrator",
+          "displayName": "muimooi",
+          "avatarUrl": "https://static.narrative-violation.com/B7qAS_PQRWFGS9-KPW5bR",
+          "isEditor": true
+        },
+        {
+          "id": 64180,
+          "username": "dylieboi",
+          "aboutYou": "here for colosseum",
+          "displayName": "dylieboi",
+          "avatarUrl": "",
+          "isEditor": true
+        },
+        {
+          "id": 63876,
+          "username": "ellinx",
+          "aboutYou": "An aspiring future game creator, currently working as an artist at Project Pathfinders. ☕️",
+          "displayName": "Ellinx",
+          "avatarUrl": "https://static.narrative-violation.com/pr5xW30OrtUJHFScumU9D",
+          "isEditor": true
+        },
+        {
+          "id": 59823,
+          "username": "pixisu",
+          "aboutYou": "My work spans from DeFi (Socean, Sanctum, Unstake.It) to novel launchpads (Lilypad) to NFT projects (Irrelevants, Pathfinders).\n\nI came up with the concept of LST-NFTs and I am committed to helping create products that are either experiential, for the public good, or both!",
+          "displayName": "Pixisu",
+          "avatarUrl": "https://static.narrative-violation.com/zMBkpy4PtUXA_DsT9L_Gj",
+          "isEditor": true
+        },
+        {
+          "id": 59837,
+          "username": "rooket",
+          "aboutYou": "I do things.",
+          "displayName": "Rooket",
+          "avatarUrl": "https://static.narrative-violation.com/w77_VW00fqDL36_SIcyKr",
+          "isEditor": true
+        },
+        {
+          "id": 64137,
+          "username": "Hazy",
+          "aboutYou": "A dedicated community manager fostering vibrant online spaces within the Web3 landscape.  Expertise lies in cultivating meaningful connections and engagement among diverse user groups.",
+          "displayName": "Hazy",
+          "avatarUrl": "https://static.narrative-violation.com/m5pTfg4CsnJuGw5p4xfLR",
+          "isEditor": true
+        },
+        {
+          "id": 62234,
+          "username": "dez",
+          "aboutYou": ".",
+          "displayName": "dez",
+          "avatarUrl": "https://static.narrative-violation.com/CCR1D3Oo9ovm0JHtXqsVk",
+          "isEditor": true
+        },
+        {
+          "id": 64107,
+          "username": "ASTRA",
+          "aboutYou": "Pixel artist",
+          "displayName": "Astra",
+          "avatarUrl": "",
+          "isEditor": true
+        },
+        {
+          "id": 64590,
+          "username": "bingle",
+          "aboutYou": "its me bingle",
+          "displayName": "bingle",
+          "avatarUrl": "",
+          "isEditor": true
+        }
+      ],
+      "prize": null,
+      "randomOrder": "-8736543694030207"
+    },
+    {
+      "id": 3438,
+      "name": "RevDrive",
+      "slug": "revdrive",
+      "description": "Rev Drive is a web-based car racing game built on Metaplex, designed for Web3 enthusiasts. Players race using cars that can be upgraded with unique NFTs. These NFTs are available in an in-game asset marketplace, giving players true ownership and the ability to trade or collect game assets while enjoying fast-paced racing action.\n",
+      "repoLink": "https://github.com/Ragna022/RevDrive",
+      "country": "Nigeria",
+      "presentationLink": "https://youtu.be/NxQ8kPyVOpE?si=lkVXxG3dtrrRp74r",
+      "technicalDemoLink": "https://youtu.be/JFKFbmp-XYY?si=LatyIBkhqF3BFrss",
+      "twitterHandle": "RevDrive_",
+      "additionalInfo": null,
+      "ownerId": 60759,
+      "submittedAt": "2025-05-16T23:26:33.680Z",
+      "hackathonId": 4,
+      "isUniversityProject": true,
+      "universityName": "University of Uyo",
+      "likes": 0,
+      "comments": 0,
+      "image": {
+        "id": 11136,
+        "name": "logo.png",
+        "url": "https://static.narrative-violation.com/4hPSSQQWNIq0D-oq8VxaP",
+        "mimetype": "image/png",
+        "size": 182060,
+        "uid": "4hPSSQQWNIq0D-oq8VxaP"
+      },
+      "tracks": ["Gaming"],
+      "teamMembers": [
+        {
+          "id": 60759,
+          "username": "giddycodes",
+          "aboutYou": "I'm a clever developer that is constantly eager to acquire new skills. Programming and Game development piques my interest.",
+          "displayName": "Gideon Archibong",
+          "avatarUrl": "",
+          "isEditor": true
+        },
+        {
+          "id": 60781,
+          "username": "Nini",
+          "aboutYou": "",
+          "displayName": "Iniubong Daniel",
+          "avatarUrl": "",
+          "isEditor": true
+        },
+        {
+          "id": 60763,
+          "username": "Mfoniso",
+          "aboutYou": "Rust, Typescript Dev",
+          "displayName": "Mfoniso",
+          "avatarUrl": "https://static.narrative-violation.com/PAD2t5nZv_H0QpYXQZLDj",
+          "isEditor": true
+        },
+        {
+          "id": 60760,
+          "username": "divin3",
+          "aboutYou": "I design stuff",
+          "displayName": "divine!",
+          "avatarUrl": "https://static.narrative-violation.com/ml-q4StxqeSekw5Rwt5Jr",
+          "isEditor": true
+        },
+        {
+          "id": 60777,
+          "username": "susan",
+          "aboutYou": "A girl who believes in the power of content",
+          "displayName": "suzy",
+          "avatarUrl": "",
+          "isEditor": true
+        }
+      ],
+      "prize": null,
+      "randomOrder": "-8726545960365657"
+    },
+    {
+      "id": 4746,
+      "name": "Holo (Synthetics) ",
+      "slug": "holo-(synthetics)",
+      "description": "Holo is set to become the premier platform for tokenizing real-world assets (RWAs) on Solana, aiming to enable users to seamlessly transition from high-volatility, risk-on assets to low-volatility, risk-off assets without leaving the DeFi space. \n\nThese synthetic tokens will closely track the prices of real-world assets, such as stocks, commodities, bonds, and other instruments. Classified as utility tokens within the European Economic Area (EEA), they can be traded under the same regulatory framework as other standard crypto assets.\n\nHolo will bring the following benefits:\n- No KYC or AML requirements \n- Diversified asset exposure within a single, permissionless DeFi ecosystem\n- Buy stocks without having to sell your crypto\n- Borrow against your synthetics \n- Tap into a new era of low-impermanent-loss liquidity mining\n- Open a new vertical for arbitrage trading between DEX and traditional finance\n- Integrate a new asset class to drive DeFi innovation\n",
+      "repoLink": "https://github.com/Jelly-Labs/solana-vault",
+      "country": "Germany",
+      "presentationLink": "https://www.youtube.com/watch?v=uPbo5f5DliA&ab_channel=jellyverse",
+      "technicalDemoLink": "https://www.youtube.com/watch?v=qviXqXy2XrQ&ab_channel=jellyverse",
+      "twitterHandle": null,
+      "additionalInfo": "Try our EVM deployment - jAssets - here: https://jassets.org/balance \n\njAsset statistics: https://jellyverse-ecosystem.com/jAssets\n\nPrevious project: https://app.jellyverse.org/jellyswap\n\nImportant note: We put our best effort into developing a functional demo for the Hackathon that represents the basic idea of Holo. However, due to the system’s complexity, it wasn’t feasible to fully port the entire protocol to Solana at this stage. Over the coming weeks, leading up to the conclusion of the Hackathon, we’ll continue preparing for this transition and begin exploring significant new concepts, such as the implementation of concentrated liquidity. That said, these updates involve in-depth theoretical work and scoping, which cannot be completed immediately and won’t be reflected in the GitHub repository over the next weeks. \n\nIf you’d like to follow our progress in the coming weeks, we’d be happy to get in touch!",
+      "ownerId": 63318,
+      "submittedAt": "2025-05-16T17:06:03.849Z",
+      "hackathonId": 4,
+      "isUniversityProject": false,
+      "universityName": null,
+      "likes": 0,
+      "comments": 0,
+      "image": {
+        "id": 17954,
+        "name": "Holo final.png",
+        "url": "https://static.narrative-violation.com/QcKhY8n2sn9wKBCs6M6E-",
+        "mimetype": "image/png",
+        "size": 19400,
+        "uid": "QcKhY8n2sn9wKBCs6M6E-"
+      },
+      "tracks": ["DeFi", "Consumer Apps", "Stablecoins"],
+      "teamMembers": [
+        {
+          "id": 63318,
+          "username": "santiago",
+          "aboutYou": "Co-Founder of Jelly Labs, YouTube @Santiago_Sabater, Co-Founder Jellyverse",
+          "displayName": "Santiago",
+          "avatarUrl": "https://static.narrative-violation.com/YCyrkBxftFsptKzKJpH-_",
+          "isEditor": true
+        },
+        {
+          "id": 61640,
+          "username": "bentheman",
+          "aboutYou": "Building the future of DeFi.",
+          "displayName": "Ben",
+          "avatarUrl": "https://static.narrative-violation.com/BxHBix-qpMtkE0wRnVyVv",
+          "isEditor": true
+        },
+        {
+          "id": 64665,
+          "username": "basicallyjovan",
+          "aboutYou": "Co-founder and CTO of JellyStudio, the team behind JellyVerse, jAssets, and soon Holo (synthetics on Solana).",
+          "displayName": "Jovan Aleksic",
+          "avatarUrl": "https://static.narrative-violation.com/bYYoJZOGfa9ENmaktMDsV",
+          "isEditor": true
+        },
+        {
+          "id": 64357,
+          "username": "lazar",
+          "aboutYou": "Building the future of DeFi.",
+          "displayName": "Lazar",
+          "avatarUrl": "https://static.narrative-violation.com/u_2rGcdaUTIZMkh0HTcgo",
+          "isEditor": true
+        }
+      ],
+      "prize": null,
+      "randomOrder": "-8719347821904855"
+    }
+  ],
+  "hackathon": {
+    "id": 4,
+    "name": "Breakout",
+    "description": "The Solana Breakout Hackathon",
+    "startDate": "2025-04-14T11:00:00.000Z",
+    "endDate": "2025-06-17T06:59:00.000Z",
+    "projectSubmissionStartDate": "2025-05-10T11:00:00.000Z",
+    "projectSubmissionEndDate": "2025-05-17T06:59:00.000Z",
+    "largeBannerImageUrl": "https://static.narrative-violation.com/breakout-banner-static-large.png",
+    "smallBannerImageUrl": "https://static.narrative-violation.com/breakout-banner-static-small.png",
+    "landingPageUrl": "https://colosseum.org/breakout",
+    "isProjectDirectoryEnabled": true,
+    "phase": 4,
+    "currentWeekNumber": null,
+    "weeklySubmissionStart": null,
+    "weeklySubmissionEnd": null,
+    "isCurrentWeekUpdateSubmitted": false
+  },
+  "offset": 0,
+  "hasMore": true,
+  "seed": null
+}
