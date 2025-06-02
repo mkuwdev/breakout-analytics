@@ -16,6 +16,11 @@ export async function GET() {
 
     const data = await response.json();
 
+    // Validate and clean the data
+    if (data.projects && Array.isArray(data.projects)) {
+      data.projects = data.projects.filter((project: any) => project && project.name && project.id !== undefined && project.slug);
+    }
+
     // Use standard HTTP caching headers instead
     return NextResponse.json(data, {
       headers: {

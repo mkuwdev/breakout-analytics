@@ -627,7 +627,13 @@ export default function SolanaHackathonDashboard() {
                               <TableCell className="py-2">
                                 <div className="flex items-center gap-2">
                                   <div className="relative h-8 w-8 rounded-md overflow-hidden bg-gray-900 flex-shrink-0">
-                                    <Image src={project.image.url || "/placeholder.svg"} alt={`${project.name} logo`} fill className="object-cover" />
+                                    {project.image?.url ? (
+                                      <Image src={project.image.url} alt={`${project.name} logo`} fill className="object-cover" />
+                                    ) : (
+                                      <div className="w-full h-full bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center">
+                                        <span className="text-xs font-semibold text-gray-400">{project.name?.charAt(0)?.toUpperCase() || "?"}</span>
+                                      </div>
+                                    )}
                                   </div>
                                   <div>
                                     <a
