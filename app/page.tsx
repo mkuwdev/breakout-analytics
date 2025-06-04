@@ -78,7 +78,7 @@ interface Project {
   hackathonId: number;
   isUniversityProject: boolean;
   universityName: string | null;
-  likes: number;
+  likes?: number;
   comments: number;
   image: ProjectImage;
   tracks: string[];
@@ -316,10 +316,10 @@ const ProjectSpotlight = ({ projects, isOpen, onClose }: ProjectSpotlightProps) 
                     <MapPin className="h-3 w-3" />
                     {currentProject.country}
                   </span>
-                  <span className="flex items-center gap-1">
+                  {/* <span className="flex items-center gap-1">
                     <Heart className="h-3 w-3 text-red-400" />
-                    {currentProject.likes}
-                  </span>
+                    {currentProject.likes || 0}
+                  </span> */}
                   <span className="flex items-center gap-1">
                     <MessageCircle className="h-3 w-3 text-blue-400" />
                     {currentProject.comments}
@@ -467,7 +467,7 @@ export default function SolanaHackathonDashboard() {
         // Update the initial ranges based on fetched data
         if (data.projects.length > 0) {
           const maxTeam = Math.max(...data.projects.map((p: Project) => p.teamMembers.length));
-          const maxLike = Math.max(...data.projects.map((p: Project) => p.likes));
+          const maxLike = Math.max(...data.projects.map((p: Project) => p.likes || 0));
           setTeamSizeRange([1, maxTeam]);
           setLikesRange([0, maxLike]);
         }
@@ -505,7 +505,7 @@ export default function SolanaHackathonDashboard() {
   const allTracks = Array.from(new Set(mappedProjects.flatMap((p) => p.tracks)));
   const allCountries = Array.from(new Set(mappedProjects.map((p) => p.country)));
   const maxTeamSize = Math.max(...mappedProjects.map((p) => p.teamMembers.length), 10);
-  const maxLikes = Math.max(...mappedProjects.map((p) => p.likes), 100);
+  const maxLikes = Math.max(...mappedProjects.map((p) => p.likes || 0), 100);
 
   const filteredAndSortedProjects = useMemo(() => {
     // Use shuffled projects for random sort, otherwise use original mapped projects
@@ -516,7 +516,7 @@ export default function SolanaHackathonDashboard() {
       const matchesTrack = selectedTracks.length === 0 || project.tracks.some((track) => selectedTracks.includes(track));
       const matchesCountry = selectedCountries.length === 0 || selectedCountries.includes(project.country);
       const matchesTeamSize = project.teamMembers.length >= teamSizeRange[0] && project.teamMembers.length <= teamSizeRange[1];
-      const matchesLikes = project.likes >= likesRange[0] && project.likes <= likesRange[1];
+      const matchesLikes = (project.likes || 0) >= likesRange[0] && (project.likes || 0) <= likesRange[1];
       const matchesUniversity = !showUniversityOnly || project.isUniversityProject;
 
       let matchesLinks = true;
@@ -538,7 +538,7 @@ export default function SolanaHackathonDashboard() {
     return filtered.sort((a, b) => {
       switch (sortBy) {
         case "likes":
-          return b.likes - a.likes;
+          return (b.likes || 0) - (a.likes || 0);
         case "name":
           return a.name.localeCompare(b.name);
         default:
@@ -717,7 +717,7 @@ export default function SolanaHackathonDashboard() {
                     </div>
 
                     {/* Likes Filter */}
-                    <div className="space-y-3">
+                    {/* <div className="space-y-3">
                       <h3 className="text-sm font-medium text-gray-300">Likes</h3>
                       <div className="px-2">
                         <Slider value={likesRange} onValueChange={setLikesRange} max={maxLikes} min={0} step={1} className="w-full" />
@@ -726,7 +726,7 @@ export default function SolanaHackathonDashboard() {
                           <span className="text-xs text-gray-500">{likesRange[1]} likes</span>
                         </div>
                       </div>
-                    </div>
+                    </div> */}
 
                     {/* University Project Filter */}
                     <div className="space-y-3">
@@ -803,9 +803,9 @@ export default function SolanaHackathonDashboard() {
                   <SelectItem value="random" className="text-gray-100 focus:bg-gray-900 focus:text-gray-100 text-xs">
                     Default (Random)
                   </SelectItem>
-                  <SelectItem value="likes" className="text-gray-100 focus:bg-gray-900 focus:text-gray-100 text-xs">
+                  {/* <SelectItem value="likes" className="text-gray-100 focus:bg-gray-900 focus:text-gray-100 text-xs">
                     Most Liked
-                  </SelectItem>
+                  </SelectItem> */}
                   <SelectItem value="name" className="text-gray-100 focus:bg-gray-900 focus:text-gray-100 text-xs">
                     Name A-Z
                   </SelectItem>
@@ -995,10 +995,10 @@ export default function SolanaHackathonDashboard() {
 
                               <TableCell className="text-center">
                                 <div className="flex items-center justify-center gap-3">
-                                  <div className="flex items-center gap-1">
+                                  {/* <div className="flex items-center gap-1">
                                     <Heart className="h-3 w-3 text-red-400" />
-                                    <span className="text-xs text-gray-300">{project.likes}</span>
-                                  </div>
+                                    <span className="text-xs text-gray-300">{project.likes || 0}</span>
+                                  </div> */}
                                   <div className="flex items-center gap-1">
                                     <MessageCircle className="h-3 w-3 text-blue-400" />
                                     <span className="text-xs text-gray-300">{project.comments}</span>

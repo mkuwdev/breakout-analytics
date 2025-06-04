@@ -73,7 +73,7 @@ export default function Analytics({ projects, filteredProjects, activeFilters }:
   const metrics = useMemo(() => {
     const totalParticipants = new Set(filteredProjects.flatMap((p) => p.teamMembers.map((m: any) => m.id))).size;
     const avgTeamSize = filteredProjects.length > 0 ? (filteredProjects.reduce((sum, p) => sum + p.teamMembers.length, 0) / filteredProjects.length).toFixed(1) : 0;
-    const totalEngagement = filteredProjects.reduce((sum, p) => sum + p.likes + p.comments, 0);
+    const totalEngagement = filteredProjects.reduce((sum, p) => sum + (p.likes || 0) + p.comments, 0);
     const projectsWithLinks = filteredProjects.filter((p) => p.repoLink || p.presentationLink || p.technicalDemoLink).length;
     const completionRate = filteredProjects.length > 0 ? ((projectsWithLinks / filteredProjects.length) * 100).toFixed(0) : 0;
 
@@ -133,8 +133,8 @@ export default function Analytics({ projects, filteredProjects, activeFilters }:
       .map((p) => ({
         name: p.name,
         slug: p.slug,
-        engagement: p.likes + p.comments,
-        likes: p.likes,
+        engagement: (p.likes || 0) + p.comments,
+        likes: p.likes || 0,
         comments: p.comments,
       }))
       .sort((a, b) => b.engagement - a.engagement)
@@ -160,18 +160,18 @@ export default function Analytics({ projects, filteredProjects, activeFilters }:
     // Overall metrics
     const allParticipants = new Set(projects.flatMap((p) => p.teamMembers.map((m: any) => m.id))).size;
     const allAvgTeamSize = projects.length > 0 ? projects.reduce((sum, p) => sum + p.teamMembers.length, 0) / projects.length : 0;
-    const allAvgEngagement = projects.length > 0 ? projects.reduce((sum, p) => sum + p.likes + p.comments, 0) / projects.length : 0;
+    const allAvgEngagement = projects.length > 0 ? projects.reduce((sum, p) => sum + (p.likes || 0) + p.comments, 0) / projects.length : 0;
     const allProjectsWithLinks = projects.filter((p) => p.repoLink || p.presentationLink || p.technicalDemoLink).length;
     const allCompletionRate = projects.length > 0 ? (allProjectsWithLinks / projects.length) * 100 : 0;
 
     // Filtered metrics
-    const filteredAvgEngagement = filteredProjects.length > 0 ? filteredProjects.reduce((sum, p) => sum + p.likes + p.comments, 0) / filteredProjects.length : 0;
+    const filteredAvgEngagement = filteredProjects.length > 0 ? filteredProjects.reduce((sum, p) => sum + (p.likes || 0) + p.comments, 0) / filteredProjects.length : 0;
     const filteredAvgTeamSize = filteredProjects.length > 0 ? filteredProjects.reduce((sum, p) => sum + p.teamMembers.length, 0) / filteredProjects.length : 0;
 
     // Track with highest average engagement
     const trackEngagement: Record<string, { total: number; count: number }> = {};
     filteredProjects.forEach((project) => {
-      const engagement = project.likes + project.comments;
+      const engagement = (project.likes || 0) + project.comments;
       project.tracks.forEach((track: string) => {
         if (!trackEngagement[track]) trackEngagement[track] = { total: 0, count: 0 };
         trackEngagement[track].total += engagement;
@@ -186,7 +186,7 @@ export default function Analytics({ projects, filteredProjects, activeFilters }:
     // Country with highest average engagement
     const countryEngagement: Record<string, { total: number; count: number }> = {};
     filteredProjects.forEach((project) => {
-      const engagement = project.likes + project.comments;
+      const engagement = (project.likes || 0) + project.comments;
       if (!countryEngagement[project.country]) countryEngagement[project.country] = { total: 0, count: 0 };
       countryEngagement[project.country].total += engagement;
       countryEngagement[project.country].count += 1;
@@ -504,7 +504,8 @@ export default function Analytics({ projects, filteredProjects, activeFilters }:
       <Card className="bg-gray-950 border-gray-800">
         <CardHeader className="pb-2">
           <CardTitle className="text-sm font-medium text-gray-100">Top 10 Projects by Engagement</CardTitle>
-          <CardDescription className="text-xs text-gray-500">Most liked and commented projects</CardDescription>
+          {/* <CardDescription className="text-xs text-gray-500">Most liked and commented projects</CardDescription> */}
+          <CardDescription className="text-xs text-gray-500">Most commented projects</CardDescription>
         </CardHeader>
         <CardContent className="pb-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -524,15 +525,15 @@ export default function Analytics({ projects, filteredProjects, activeFilters }:
                     </a>
                   </div>
                   <div className="flex items-center gap-4 ml-4">
-                    <div className="flex items-center gap-1">
+                    {/* <div className="flex items-center gap-1">
                       <Heart className="h-3 w-3 text-red-400" />
                       <span className="text-xs text-gray-400">{project.likes}</span>
-                    </div>
+                    </div> */}
                     <div className="flex items-center gap-1">
                       <MessageCircle className="h-3 w-3 text-blue-400" />
                       <span className="text-xs text-gray-400">{project.comments}</span>
                     </div>
-                    <span className="text-xs font-medium text-gray-300 w-12 text-right">{project.engagement}</span>
+                    {/* <span className="text-xs font-medium text-gray-300 w-12 text-right">{project.engagement}</span> */}
                   </div>
                 </div>
               ))}
@@ -554,15 +555,15 @@ export default function Analytics({ projects, filteredProjects, activeFilters }:
                     </a>
                   </div>
                   <div className="flex items-center gap-4 ml-4">
-                    <div className="flex items-center gap-1">
+                    {/* <div className="flex items-center gap-1">
                       <Heart className="h-3 w-3 text-red-400" />
                       <span className="text-xs text-gray-400">{project.likes}</span>
-                    </div>
+                    </div> */}
                     <div className="flex items-center gap-1">
                       <MessageCircle className="h-3 w-3 text-blue-400" />
                       <span className="text-xs text-gray-400">{project.comments}</span>
                     </div>
-                    <span className="text-xs font-medium text-gray-300 w-12 text-right">{project.engagement}</span>
+                    {/* <span className="text-xs font-medium text-gray-300 w-12 text-right">{project.engagement}</span> */}
                   </div>
                 </div>
               ))}
