@@ -26,6 +26,8 @@ import {
   ChevronsRight,
   BarChart3,
   TableIcon,
+  Sparkles,
+  Shuffle,
 } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -36,6 +38,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Slider } from "@/components/ui/slider";
 import { Skeleton } from "@/components/ui/skeleton";
+import { motion, AnimatePresence } from "framer-motion";
 // import hackathonData from "@/data/hackathon-data.json";
 import Image from "next/image";
 import Analytics from "./analytics";
@@ -220,11 +223,202 @@ const LoadingSkeleton = () => (
   </div>
 );
 
+// Project Spotlight Component
+interface ProjectSpotlightProps {
+  projects: Project[];
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+const ProjectSpotlight = ({ projects, isOpen, onClose }: ProjectSpotlightProps) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [showConfetti, setShowConfetti] = useState(false);
+
+  // Reset to a random project when opened
+  useEffect(() => {
+    if (isOpen && projects.length > 0) {
+      setCurrentIndex(Math.floor(Math.random() * projects.length));
+    }
+  }, [isOpen, projects.length]);
+
+  const currentProject = projects[currentIndex];
+
+  const handleNext = () => {
+    setShowConfetti(true);
+    const newIndex = Math.floor(Math.random() * projects.length);
+    setCurrentIndex(newIndex);
+
+    // Reset confetti after animation
+    setTimeout(() => setShowConfetti(false), 1000);
+  };
+
+  if (!currentProject) return null;
+
+  return (
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-3xl w-[95vw] sm:w-full bg-gray-950 border-gray-800 text-gray-100 p-0 overflow-hidden max-h-[90vh] overflow-y-auto">
+        {/* Confetti Animation */}
+        <AnimatePresence>
+          {showConfetti && (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 pointer-events-none z-50">
+              {[...Array(20)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  className="absolute w-2 h-2 bg-gradient-to-br from-purple-400 to-blue-400"
+                  style={{
+                    left: `${Math.random() * 100}%`,
+                    top: -10,
+                  }}
+                  animate={{
+                    y: window.innerHeight + 20,
+                    x: (Math.random() - 0.5) * 200,
+                    rotate: Math.random() * 360,
+                  }}
+                  transition={{
+                    duration: Math.random() * 2 + 1,
+                    ease: "easeOut",
+                  }}
+                />
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentProject.id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+            className="p-4 sm:p-6"
+          >
+            {/* Header with project logo and name */}
+            <div className="flex flex-col sm:flex-row sm:items-start gap-4 mb-6">
+              <motion.div
+                className="relative h-16 w-16 sm:h-20 sm:w-20 rounded-lg overflow-hidden bg-gray-900 flex-shrink-0 mx-auto sm:mx-0"
+                whileHover={{ scale: 1.05 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                {currentProject.image?.url ? (
+                  <Image src={currentProject.image.url} alt={`${currentProject.name} logo`} fill className="object-cover" />
+                ) : (
+                  <div className="w-full h-full bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center">
+                    <span className="text-xl sm:text-2xl font-bold text-white">{currentProject.name?.charAt(0)?.toUpperCase() || "?"}</span>
+                  </div>
+                )}
+              </motion.div>
+
+              <div className="flex-1 text-center sm:text-left">
+                <h2 className="text-xl sm:text-2xl font-bold text-white mb-2">{currentProject.name}</h2>
+                <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 sm:gap-4 text-sm text-gray-400">
+                  <span className="flex items-center gap-1">
+                    <MapPin className="h-3 w-3" />
+                    {currentProject.country}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <Heart className="h-3 w-3 text-red-400" />
+                    {currentProject.likes}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <MessageCircle className="h-3 w-3 text-blue-400" />
+                    {currentProject.comments}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Tracks */}
+            <div className="flex flex-wrap gap-2 mb-4">
+              {currentProject.tracks.map((track) => (
+                <Badge key={track} variant="outline" className={`${trackColors[track as keyof typeof trackColors] || "bg-gray-500/20 text-gray-300 border-gray-500/30"}`}>
+                  {track}
+                </Badge>
+              ))}
+            </div>
+
+            {/* Description */}
+            <div className="mb-6">
+              <h3 className="text-sm font-semibold text-gray-300 mb-2">About</h3>
+              <p className="text-sm text-gray-400 leading-relaxed">{currentProject.description}</p>
+            </div>
+
+            {/* Team Members */}
+            <div className="mb-6">
+              <h3 className="text-sm font-semibold text-gray-300 mb-3">Team ({currentProject.teamMembers.length} members)</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 sm:gap-3">
+                {currentProject.teamMembers.map((member, idx) => (
+                  <motion.a
+                    key={idx}
+                    href={`https://arena.colosseum.org/profiles/${member.username}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 p-2 rounded-lg bg-gray-900 hover:bg-gray-800 transition-colors"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <Avatar className="h-8 w-8 sm:h-10 sm:w-10 flex-shrink-0">
+                      {member.avatarUrl && member.avatarUrl.trim() !== "" && <AvatarImage src={member.avatarUrl} alt={member.displayName} />}
+                      <AvatarFallback className={`bg-gradient-to-r ${getAvatarGradient(member.displayName)} text-white text-xs font-semibold`}>
+                        {member.displayName.charAt(0).toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs font-medium text-gray-200 truncate">{member.displayName}</p>
+                      <p className="text-[10px] text-gray-500 truncate">@{member.username}</p>
+                    </div>
+                  </motion.a>
+                ))}
+              </div>
+            </div>
+
+            {/* Links and Actions */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-4 border-t border-gray-800">
+              <div className="flex flex-wrap items-center gap-2">
+                {currentProject.repoLink && (
+                  <a href={currentProject.repoLink} target="_blank" rel="noopener noreferrer" className="flex-shrink-0">
+                    <Button size="sm" variant="outline" className="bg-gray-900 border-gray-800 hover:bg-gray-800 text-xs h-8 px-2 sm:px-3">
+                      <Github className="h-4 w-4 sm:mr-1.5" />
+                      <span className="hidden sm:inline">GitHub</span>
+                    </Button>
+                  </a>
+                )}
+                {currentProject.presentationLink && (
+                  <a href={currentProject.presentationLink} target="_blank" rel="noopener noreferrer" className="flex-shrink-0">
+                    <Button size="sm" variant="outline" className="bg-gray-900 border-gray-800 hover:bg-gray-800 text-xs h-8 px-2 sm:px-3">
+                      <Presentation className="h-4 w-4 sm:mr-1.5" />
+                      <span className="hidden sm:inline">Demo</span>
+                    </Button>
+                  </a>
+                )}
+                <a href={`https://arena.colosseum.org/projects/explore/${currentProject.slug}`} target="_blank" rel="noopener noreferrer" className="flex-shrink-0">
+                  <Button size="sm" variant="outline" className="bg-gray-900 border-gray-800 hover:bg-gray-800 text-xs h-8 px-2 sm:px-3">
+                    <ExternalLink className="h-4 w-4 sm:mr-1.5" />
+                    <span className="hidden sm:inline">View</span>
+                    <span className="sm:hidden">View</span>
+                  </Button>
+                </a>
+              </div>
+
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="w-full sm:w-auto">
+                <Button onClick={handleNext} className="bg-purple-600 hover:bg-purple-700 text-white w-full sm:w-auto text-sm" size="sm">
+                  <Sparkles className="h-4 w-4 mr-2" />
+                  Next Random Project
+                </Button>
+              </motion.div>
+            </div>
+          </motion.div>
+        </AnimatePresence>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
 export default function SolanaHackathonDashboard() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedTracks, setSelectedTracks] = useState<string[]>([]);
   const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
-  const [sortBy, setSortBy] = useState("likes");
+  const [sortBy, setSortBy] = useState("random");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(20);
   const [teamSizeRange, setTeamSizeRange] = useState([1, 10]);
@@ -237,6 +431,26 @@ export default function SolanaHackathonDashboard() {
   const [showUniversityOnly, setShowUniversityOnly] = useState(false);
   const [hasLinks, setHasLinks] = useState<string>("all"); // all, with-links, without-links
   const [activeTab, setActiveTab] = useState("projects");
+  const [showSpotlight, setShowSpotlight] = useState(false);
+  const [shuffledProjects, setShuffledProjects] = useState<Project[]>([]);
+
+  // Fisher-Yates shuffle algorithm
+  const shuffleArray = <T,>(array: T[]): T[] => {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  };
+
+  // Function to explicitly shuffle projects
+  const handleShuffle = () => {
+    if (mappedProjects.length > 0) {
+      setShuffledProjects(shuffleArray(mappedProjects));
+      setCurrentPage(1);
+    }
+  };
 
   // Fetch data on component mount
   useEffect(() => {
@@ -281,13 +495,23 @@ export default function SolanaHackathonDashboard() {
     }));
   }, [hackathonData]);
 
+  // Initialize shuffled projects when mapped projects are ready
+  useEffect(() => {
+    if (mappedProjects.length > 0 && shuffledProjects.length === 0) {
+      setShuffledProjects(shuffleArray(mappedProjects));
+    }
+  }, [mappedProjects, shuffledProjects.length]);
+
   const allTracks = Array.from(new Set(mappedProjects.flatMap((p) => p.tracks)));
   const allCountries = Array.from(new Set(mappedProjects.map((p) => p.country)));
   const maxTeamSize = Math.max(...mappedProjects.map((p) => p.teamMembers.length), 10);
   const maxLikes = Math.max(...mappedProjects.map((p) => p.likes), 100);
 
   const filteredAndSortedProjects = useMemo(() => {
-    const filtered = mappedProjects.filter((project) => {
+    // Use shuffled projects for random sort, otherwise use original mapped projects
+    const sourceProjects = sortBy === "random" ? shuffledProjects : mappedProjects;
+
+    const filtered = sourceProjects.filter((project) => {
       const matchesSearch = project.name.toLowerCase().includes(searchTerm.toLowerCase()) || project.description.toLowerCase().includes(searchTerm.toLowerCase());
       const matchesTrack = selectedTracks.length === 0 || project.tracks.some((track) => selectedTracks.includes(track));
       const matchesCountry = selectedCountries.length === 0 || selectedCountries.includes(project.country);
@@ -305,6 +529,12 @@ export default function SolanaHackathonDashboard() {
       return matchesSearch && matchesTrack && matchesCountry && matchesTeamSize && matchesLikes && matchesUniversity && matchesLinks;
     });
 
+    // For random sort, keep the order from shuffledProjects (no additional sorting needed)
+    if (sortBy === "random") {
+      return filtered;
+    }
+
+    // Apply sorting for other sort options
     return filtered.sort((a, b) => {
       switch (sortBy) {
         case "likes":
@@ -315,7 +545,7 @@ export default function SolanaHackathonDashboard() {
           return 0;
       }
     });
-  }, [searchTerm, selectedTracks, selectedCountries, sortBy, mappedProjects, teamSizeRange, likesRange, showUniversityOnly, hasLinks]);
+  }, [searchTerm, selectedTracks, selectedCountries, sortBy, mappedProjects, shuffledProjects, teamSizeRange, likesRange, showUniversityOnly, hasLinks]);
 
   // Pagination logic
   const totalPages = Math.ceil(filteredAndSortedProjects.length / itemsPerPage);
@@ -359,8 +589,8 @@ export default function SolanaHackathonDashboard() {
                 rel="noopener noreferrer"
                 className="text-sm text-gray-300 hover:text-gray-300 transition-colors flex items-center gap-1"
               >
-                <span>Made by</span>
-                <span className="font-medium">Figo</span>
+                <span className="hidden sm:inline">Made by</span>
+                <span className="hidden sm:inline font-medium">Figo</span>
               </a>
               <Avatar className="h-8 w-8 border border-gray-700">
                 <AvatarImage src="/figo.jpg" alt="Figo" />
@@ -389,6 +619,9 @@ export default function SolanaHackathonDashboard() {
       {/* Main Content */}
       {!isLoading && !error && hackathonData && (
         <>
+          {/* Project Spotlight Modal */}
+          <ProjectSpotlight projects={filteredAndSortedProjects} isOpen={showSpotlight} onClose={() => setShowSpotlight(false)} />
+
           {/* Search and Filters */}
           <div className="container mx-auto px-6 py-4">
             <div className="flex gap-3 items-center">
@@ -567,6 +800,9 @@ export default function SolanaHackathonDashboard() {
                   <SelectValue placeholder="Sort by" />
                 </SelectTrigger>
                 <SelectContent className="bg-black border-gray-800 text-gray-100">
+                  <SelectItem value="random" className="text-gray-100 focus:bg-gray-900 focus:text-gray-100 text-xs">
+                    Default (Random)
+                  </SelectItem>
                   <SelectItem value="likes" className="text-gray-100 focus:bg-gray-900 focus:text-gray-100 text-xs">
                     Most Liked
                   </SelectItem>
@@ -581,16 +817,49 @@ export default function SolanaHackathonDashboard() {
           {/* Tabs Navigation */}
           <div className="container mx-auto px-6 pb-6">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
-              <TabsList className="bg-gray-900 border border-gray-800">
-                <TabsTrigger value="projects" className="data-[state=active]:bg-gray-800">
-                  <TableIcon className="h-4 w-4 mr-2" />
-                  Projects
-                </TabsTrigger>
-                <TabsTrigger value="analytics" className="data-[state=active]:bg-gray-800">
-                  <BarChart3 className="h-4 w-4 mr-2" />
-                  Analytics
-                </TabsTrigger>
-              </TabsList>
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <TabsList className="bg-gray-900 border border-gray-800 w-fit">
+                  <TabsTrigger value="projects" className="data-[state=active]:bg-gray-800">
+                    <TableIcon className="h-4 w-4 mr-2" />
+                    Projects
+                  </TabsTrigger>
+                  <TabsTrigger value="analytics" className="data-[state=active]:bg-gray-800">
+                    <BarChart3 className="h-4 w-4 mr-2" />
+                    Analytics
+                  </TabsTrigger>
+                </TabsList>
+
+                <div className="flex items-center gap-3 flex-wrap">
+                  {activeTab === "projects" && sortBy === "random" && (
+                    <Button onClick={handleShuffle} variant="outline" className="h-9 bg-black border-gray-800 text-gray-100 hover:bg-gray-900 hover:border-gray-700" size="sm">
+                      <Shuffle className="h-4 w-4 mr-2" />
+                      Shuffle
+                    </Button>
+                  )}
+
+                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <Button
+                      onClick={() => setShowSpotlight(true)}
+                      className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white relative overflow-hidden"
+                      size="sm"
+                    >
+                      <motion.div
+                        className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0"
+                        animate={{
+                          x: ["-100%", "100%"],
+                        }}
+                        transition={{
+                          duration: 3,
+                          repeat: Infinity,
+                          repeatDelay: 2,
+                        }}
+                      />
+                      <Sparkles className="h-4 w-4 mr-2 relative z-10" />
+                      <span className="relative z-10">Project Spotlight</span>
+                    </Button>
+                  </motion.div>
+                </div>
+              </div>
 
               {/* Projects Table Tab */}
               <TabsContent value="projects" className="space-y-0">
