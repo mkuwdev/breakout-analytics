@@ -18,7 +18,6 @@ export async function GET(request: Request) {
       headers: {
         "Content-Type": "application/json",
       },
-      // Remove Next.js cache due to 2MB limit
       cache: "no-store", // This prevents Next.js from trying to cache
     });
 
@@ -33,14 +32,11 @@ export async function GET(request: Request) {
       data.projects = data.projects.filter((project: any) => project && project.name && project.id !== undefined && project.slug);
     }
 
-    // Use standard HTTP caching headers instead
+    // Cache for 1 hour (3600 seconds)
     return NextResponse.json(data, {
       headers: {
         // Cache for 1 hour in the browser
-        //"Cache-Control": "public, max-age=3600, stale-while-revalidate=7200",
-        "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
-        Pragma: "no-cache",
-        Expires: "0",
+        "Cache-Control": "public, max-age=3600, stale-while-revalidate=7200",
       },
     });
   } catch (error) {
