@@ -32,7 +32,6 @@ interface AnalyticsProps {
     tracks: string[];
     countries: string[];
     teamSizeRange: number[];
-    likesRange: number[];
     universityOnly: boolean;
     hasLinks: string;
     searchTerm: string;
@@ -73,17 +72,16 @@ export default function Analytics({ projects, filteredProjects, activeFilters }:
   const metrics = useMemo(() => {
     const totalParticipants = new Set(filteredProjects.flatMap((p) => p.teamMembers.map((m: any) => m.id))).size;
     const avgTeamSize = filteredProjects.length > 0 ? (filteredProjects.reduce((sum, p) => sum + p.teamMembers.length, 0) / filteredProjects.length).toFixed(1) : 0;
-    const totalEngagement = filteredProjects.reduce((sum, p) => sum + (p.likes || 0) + p.comments, 0);
-    const projectsWithLinks = filteredProjects.filter((p) => p.repoLink || p.presentationLink || p.technicalDemoLink).length;
-    const completionRate = filteredProjects.length > 0 ? ((projectsWithLinks / filteredProjects.length) * 100).toFixed(0) : 0;
+    const universityProjects = filteredProjects.filter((p) => p.isUniversityProject).length;
+    const totalComments = filteredProjects.reduce((sum, p) => sum + p.comments, 0);
 
     return {
       totalProjects: filteredProjects.length,
       totalParticipants,
       avgTeamSize,
-      totalEngagement,
-      completionRate,
       countriesRepresented: new Set(filteredProjects.map((p) => p.country)).size,
+      universityProjects,
+      totalComments,
     };
   }, [filteredProjects]);
 
@@ -127,17 +125,15 @@ export default function Analytics({ projects, filteredProjects, activeFilters }:
       .sort((a, b) => parseInt(a.size) - parseInt(b.size));
   }, [filteredProjects]);
 
-  // Top 10 projects by engagement with full data
+  // Top 10 projects by comments
   const topProjects = useMemo(() => {
     return [...filteredProjects]
       .map((p) => ({
         name: p.name,
         slug: p.slug,
-        engagement: (p.likes || 0) + p.comments,
-        likes: p.likes || 0,
         comments: p.comments,
       }))
-      .sort((a, b) => b.engagement - a.engagement)
+      .sort((a, b) => b.comments - a.comments)
       .slice(0, 10);
   }, [filteredProjects]);
 
@@ -160,41 +156,29 @@ export default function Analytics({ projects, filteredProjects, activeFilters }:
     // Overall metrics
     const allParticipants = new Set(projects.flatMap((p) => p.teamMembers.map((m: any) => m.id))).size;
     const allAvgTeamSize = projects.length > 0 ? projects.reduce((sum, p) => sum + p.teamMembers.length, 0) / projects.length : 0;
-    const allAvgEngagement = projects.length > 0 ? projects.reduce((sum, p) => sum + (p.likes || 0) + p.comments, 0) / projects.length : 0;
-    const allProjectsWithLinks = projects.filter((p) => p.repoLink || p.presentationLink || p.technicalDemoLink).length;
-    const allCompletionRate = projects.length > 0 ? (allProjectsWithLinks / projects.length) * 100 : 0;
+    const allAvgComments = projects.length > 0 ? projects.reduce((sum, p) => sum + p.comments, 0) / projects.length : 0;
+    const allUniversityRate = projects.length > 0 ? ((projects.filter((p) => p.isUniversityProject).length / projects.length) * 100).toFixed(1) : 0;
 
     // Filtered metrics
-    const filteredAvgEngagement = filteredProjects.length > 0 ? filteredProjects.reduce((sum, p) => sum + (p.likes || 0) + p.comments, 0) / filteredProjects.length : 0;
     const filteredAvgTeamSize = filteredProjects.length > 0 ? filteredProjects.reduce((sum, p) => sum + p.teamMembers.length, 0) / filteredProjects.length : 0;
+    const filteredAvgComments = filteredProjects.length > 0 ? filteredProjects.reduce((sum, p) => sum + p.comments, 0) / filteredProjects.length : 0;
+    const filteredUniversityRate = filteredProjects.length > 0 ? ((filteredProjects.filter((p) => p.isUniversityProject).length / filteredProjects.length) * 100).toFixed(1) : 0;
 
-    // Track with highest average engagement
-    const trackEngagement: Record<string, { total: number; count: number }> = {};
+    // Most popular track (by count)
+    const trackCounts: Record<string, number> = {};
     filteredProjects.forEach((project) => {
-      const engagement = (project.likes || 0) + project.comments;
       project.tracks.forEach((track: string) => {
-        if (!trackEngagement[track]) trackEngagement[track] = { total: 0, count: 0 };
-        trackEngagement[track].total += engagement;
-        trackEngagement[track].count += 1;
+        trackCounts[track] = (trackCounts[track] || 0) + 1;
       });
     });
+    const topTrack = Object.entries(trackCounts).sort((a, b) => b[1] - a[1])[0];
 
-    const topTrackByEngagement = Object.entries(trackEngagement)
-      .map(([track, data]) => ({ track, avgEngagement: data.total / data.count }))
-      .sort((a, b) => b.avgEngagement - a.avgEngagement)[0];
-
-    // Country with highest average engagement
-    const countryEngagement: Record<string, { total: number; count: number }> = {};
+    // Most common country
+    const countryCounts: Record<string, number> = {};
     filteredProjects.forEach((project) => {
-      const engagement = (project.likes || 0) + project.comments;
-      if (!countryEngagement[project.country]) countryEngagement[project.country] = { total: 0, count: 0 };
-      countryEngagement[project.country].total += engagement;
-      countryEngagement[project.country].count += 1;
+      countryCounts[project.country] = (countryCounts[project.country] || 0) + 1;
     });
-
-    const topCountryByEngagement = Object.entries(countryEngagement)
-      .map(([country, data]) => ({ country, avgEngagement: data.total / data.count }))
-      .sort((a, b) => b.avgEngagement - a.avgEngagement)[0];
+    const topCountry = Object.entries(countryCounts).sort((a, b) => b[1] - a[1])[0];
 
     // Most common team size
     const teamSizeCounts: Record<number, number> = {};
@@ -205,16 +189,17 @@ export default function Analytics({ projects, filteredProjects, activeFilters }:
     const mostCommonTeamSize = Object.entries(teamSizeCounts).sort((a, b) => b[1] - a[1])[0];
 
     return {
-      engagementDiff: (((filteredAvgEngagement - allAvgEngagement) / allAvgEngagement) * 100).toFixed(1),
       teamSizeDiff: (((filteredAvgTeamSize - allAvgTeamSize) / allAvgTeamSize) * 100).toFixed(1),
-      completionDiff: (Number(metrics.completionRate) - allCompletionRate).toFixed(1),
-      topTrack: topTrackByEngagement,
-      topCountry: topCountryByEngagement,
+      commentsDiff: (((filteredAvgComments - allAvgComments) / allAvgComments) * 100).toFixed(1),
+      universityDiff: (Number(filteredUniversityRate) - Number(allUniversityRate)).toFixed(1),
+      topTrack: topTrack ? { track: topTrack[0], count: topTrack[1] } : null,
+      topCountry: topCountry ? { country: topCountry[0], count: topCountry[1] } : null,
       mostCommonTeamSize: mostCommonTeamSize ? { size: mostCommonTeamSize[0], count: mostCommonTeamSize[1] } : null,
-      filteredAvgEngagement: filteredAvgEngagement.toFixed(1),
-      allAvgEngagement: allAvgEngagement.toFixed(1),
+      filteredAvgComments: filteredAvgComments.toFixed(1),
+      filteredUniversityRate,
+      allUniversityRate,
     };
-  }, [projects, filteredProjects, metrics.completionRate]);
+  }, [projects, filteredProjects]);
 
   return (
     <div className="space-y-6">
@@ -246,16 +231,6 @@ export default function Analytics({ projects, filteredProjects, activeFilters }:
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-400">Average Engagement</span>
-                  <div className="flex items-center gap-2">
-                    <span className="text-gray-200">{insights.filteredAvgEngagement}</span>
-                    <span className={`text-xs ${Number(insights.engagementDiff) > 0 ? "text-green-400" : Number(insights.engagementDiff) < 0 ? "text-red-400" : "text-gray-400"}`}>
-                      ({Number(insights.engagementDiff) > 0 ? "+" : ""}
-                      {insights.engagementDiff}%)
-                    </span>
-                  </div>
-                </div>
-                <div className="flex items-center justify-between">
                   <span className="text-gray-400">Average Team Size</span>
                   <div className="flex items-center gap-2">
                     <span className="text-gray-200">{Number(metrics.avgTeamSize).toFixed(1)}</span>
@@ -266,12 +241,22 @@ export default function Analytics({ projects, filteredProjects, activeFilters }:
                   </div>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-400">Completion Rate</span>
+                  <span className="text-gray-400">Average Comments</span>
                   <div className="flex items-center gap-2">
-                    <span className="text-gray-200">{metrics.completionRate}%</span>
-                    <span className={`text-xs ${Number(insights.completionDiff) > 0 ? "text-green-400" : Number(insights.completionDiff) < 0 ? "text-red-400" : "text-gray-400"}`}>
-                      ({Number(insights.completionDiff) > 0 ? "+" : ""}
-                      {insights.completionDiff}pp)
+                    <span className="text-gray-200">{insights.filteredAvgComments}</span>
+                    <span className={`text-xs ${Number(insights.commentsDiff) > 0 ? "text-green-400" : Number(insights.commentsDiff) < 0 ? "text-red-400" : "text-gray-400"}`}>
+                      ({Number(insights.commentsDiff) > 0 ? "+" : ""}
+                      {insights.commentsDiff}%)
+                    </span>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-400">University Projects</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-gray-200">{insights.filteredUniversityRate}%</span>
+                    <span className={`text-xs ${Number(insights.universityDiff) > 0 ? "text-green-400" : Number(insights.universityDiff) < 0 ? "text-red-400" : "text-gray-400"}`}>
+                      ({Number(insights.universityDiff) > 0 ? "+" : ""}
+                      {insights.universityDiff}pp)
                     </span>
                   </div>
                 </div>
@@ -279,19 +264,19 @@ export default function Analytics({ projects, filteredProjects, activeFilters }:
               <div className="space-y-2">
                 {insights.topTrack && (
                   <div className="flex items-center justify-between">
-                    <span className="text-gray-400">Top Track by Engagement</span>
+                    <span className="text-gray-400">Most Popular Track</span>
                     <div className="flex items-center gap-2">
                       <Badge className="bg-purple-500/20 text-purple-400 border-purple-500/50 text-xs">{insights.topTrack.track}</Badge>
-                      <span className="text-xs text-gray-500">({insights.topTrack.avgEngagement.toFixed(1)} avg)</span>
+                      <span className="text-xs text-gray-500">({insights.topTrack.count} projects)</span>
                     </div>
                   </div>
                 )}
                 {insights.topCountry && (
                   <div className="flex items-center justify-between">
-                    <span className="text-gray-400">Top Country by Engagement</span>
+                    <span className="text-gray-400">Most Projects From</span>
                     <div className="flex items-center gap-2">
                       <span className="text-gray-200">{insights.topCountry.country}</span>
-                      <span className="text-xs text-gray-500">({insights.topCountry.avgEngagement.toFixed(1)} avg)</span>
+                      <span className="text-xs text-gray-500">({insights.topCountry.count} projects)</span>
                     </div>
                   </div>
                 )}
@@ -341,15 +326,6 @@ export default function Analytics({ projects, filteredProjects, activeFilters }:
 
         <Card className="bg-gray-950 border-gray-800">
           <CardHeader className="pb-1 pt-3 px-3">
-            <CardTitle className="text-xs font-medium text-gray-300">Total Engagement</CardTitle>
-          </CardHeader>
-          <CardContent className="px-3 pb-3">
-            <div className="text-xl font-bold text-white">{metrics.totalEngagement}</div>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-gray-950 border-gray-800">
-          <CardHeader className="pb-1 pt-3 px-3">
             <CardTitle className="text-xs font-medium text-gray-300">Countries</CardTitle>
           </CardHeader>
           <CardContent className="px-3 pb-3">
@@ -359,15 +335,24 @@ export default function Analytics({ projects, filteredProjects, activeFilters }:
 
         <Card className="bg-gray-950 border-gray-800">
           <CardHeader className="pb-1 pt-3 px-3">
-            <CardTitle className="text-xs font-medium text-gray-300">Completion Rate</CardTitle>
+            <CardTitle className="text-xs font-medium text-gray-300">University Projects</CardTitle>
           </CardHeader>
           <CardContent className="px-3 pb-3">
-            <div className="text-xl font-bold text-white">{metrics.completionRate}%</div>
+            <div className="text-xl font-bold text-white">{metrics.universityProjects}</div>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-gray-950 border-gray-800">
+          <CardHeader className="pb-1 pt-3 px-3">
+            <CardTitle className="text-xs font-medium text-gray-300">Total Comments</CardTitle>
+          </CardHeader>
+          <CardContent className="px-3 pb-3">
+            <div className="text-xl font-bold text-white">{metrics.totalComments}</div>
           </CardContent>
         </Card>
       </div>
 
-      {/* Charts Grid - First Row */}
+      {/* Charts Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {/* Track Distribution */}
         <Card className="bg-gray-950 border-gray-800">
@@ -500,11 +485,10 @@ export default function Analytics({ projects, filteredProjects, activeFilters }:
         </Card>
       </div>
 
-      {/* Top 10 Projects - Full Width */}
+      {/* Top 10 Projects by Comments - Full Width */}
       <Card className="bg-gray-950 border-gray-800">
         <CardHeader className="pb-2">
-          <CardTitle className="text-sm font-medium text-gray-100">Top 10 Projects by Engagement</CardTitle>
-          {/* <CardDescription className="text-xs text-gray-500">Most liked and commented projects</CardDescription> */}
+          <CardTitle className="text-sm font-medium text-gray-100">Top 10 Projects by Comments</CardTitle>
           <CardDescription className="text-xs text-gray-500">Most commented projects</CardDescription>
         </CardHeader>
         <CardContent className="pb-4">
@@ -525,15 +509,10 @@ export default function Analytics({ projects, filteredProjects, activeFilters }:
                     </a>
                   </div>
                   <div className="flex items-center gap-4 ml-4">
-                    {/* <div className="flex items-center gap-1">
-                      <Heart className="h-3 w-3 text-red-400" />
-                      <span className="text-xs text-gray-400">{project.likes}</span>
-                    </div> */}
                     <div className="flex items-center gap-1">
                       <MessageCircle className="h-3 w-3 text-blue-400" />
                       <span className="text-xs text-gray-400">{project.comments}</span>
                     </div>
-                    {/* <span className="text-xs font-medium text-gray-300 w-12 text-right">{project.engagement}</span> */}
                   </div>
                 </div>
               ))}
@@ -555,15 +534,10 @@ export default function Analytics({ projects, filteredProjects, activeFilters }:
                     </a>
                   </div>
                   <div className="flex items-center gap-4 ml-4">
-                    {/* <div className="flex items-center gap-1">
-                      <Heart className="h-3 w-3 text-red-400" />
-                      <span className="text-xs text-gray-400">{project.likes}</span>
-                    </div> */}
                     <div className="flex items-center gap-1">
                       <MessageCircle className="h-3 w-3 text-blue-400" />
                       <span className="text-xs text-gray-400">{project.comments}</span>
                     </div>
-                    {/* <span className="text-xs font-medium text-gray-300 w-12 text-right">{project.engagement}</span> */}
                   </div>
                 </div>
               ))}
