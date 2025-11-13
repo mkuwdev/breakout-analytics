@@ -42,6 +42,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Analytics from "@/app/analytics";
 import { HackathonSelector } from "./hackathon-selector";
+import { AnnouncementBanner } from "./announcement-banner";
 import type { Hackathon } from "@/lib/hackathons";
 
 // TypeScript interfaces
@@ -577,557 +578,590 @@ export default function Dashboard({ hackathon }: DashboardProps) {
   };
 
   return (
-    <div className="min-h-screen bg-black text-gray-100">
+    <div className="min-h-screen bg-black text-gray-100 flex flex-col">
+      {/* Announcement Banner */}
+      <AnnouncementBanner />
+
       {/* Header */}
       <div className="border-b border-gray-800 bg-black">
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <Image src="/colosseum.jpg" alt="Colosseum" width={40} height={40} className="rounded-lg" />
-              <h1 className="text-2xl font-normal text-white">{hackathon.name} Hackathon Analytics</h1>
+        <div className="container mx-auto px-3 sm:px-6 py-3 sm:py-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
+            <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
+              <Image src="/colosseum.jpg" alt="Colosseum" width={40} height={40} className="rounded-lg flex-shrink-0" />
+              <h1 className="text-lg sm:text-2xl font-normal text-white truncate sm:whitespace-normal">
+                <span className="hidden sm:inline">{hackathon.name} Hackathon Analytics</span>
+                <span className="sm:hidden">{hackathon.name} Analytics</span>
+              </h1>
             </div>
-            <div className="flex items-center gap-4">
-              <HackathonSelector />
-              <a
-                href="https://x.com/figo_saleh"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-gray-300 hover:text-gray-300 transition-colors flex items-center gap-1"
-              >
-                <span className="hidden sm:inline">Made by</span>
-                <span className="hidden sm:inline font-medium">Figo</span>
+            <div className="flex items-center gap-2 sm:gap-4 w-full sm:w-auto justify-between sm:justify-end">
+              <div className="flex-shrink-0">
+                <HackathonSelector />
+              </div>
+              <a href="https://x.com/figo_saleh" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:opacity-80 transition-opacity flex-shrink-0">
+                <span className="text-xs sm:text-sm text-gray-300 flex items-center gap-1">
+                  <span className="sm:inline">Made by</span>
+                  <span className="font-medium">Figo</span>
+                </span>
+                <Avatar className="h-7 w-7 sm:h-8 sm:w-8 border border-gray-700 cursor-pointer">
+                  <AvatarImage src="/figo.jpg" alt="Figo" />
+                  <AvatarFallback className="bg-gray-800 text-gray-300 text-xs font-semibold">F</AvatarFallback>
+                </Avatar>
               </a>
-              <Avatar className="h-8 w-8 border border-gray-700">
-                <AvatarImage src="/figo.jpg" alt="Figo" />
-                <AvatarFallback className="bg-gray-800 text-gray-300 text-xs font-semibold">F</AvatarFallback>
-              </Avatar>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Loading State */}
-      {isLoading && <LoadingSkeleton />}
+      <div className="flex-1">
+        {/* Loading State */}
+        {isLoading && <LoadingSkeleton />}
 
-      {/* Error State */}
-      {error && (
-        <div className="container mx-auto px-6 py-4">
-          <div className="bg-red-900/20 border border-red-800 rounded-lg p-4">
-            <p className="text-red-400">Error loading projects: {error}</p>
-            <Button onClick={() => window.location.reload()} className="mt-2 bg-red-900 hover:bg-red-800 text-white">
-              Retry
-            </Button>
-          </div>
-        </div>
-      )}
-
-      {/* Main Content */}
-      {!isLoading && !error && hackathonData && (
-        <>
-          {/* Project Spotlight Modal */}
-          <ProjectSpotlight projects={filteredAndSortedProjects} isOpen={showSpotlight} onClose={() => setShowSpotlight(false)} />
-
-          {/* Search and Filters */}
+        {/* Error State */}
+        {error && (
           <div className="container mx-auto px-6 py-4">
-            <div className="flex gap-3 items-center">
-              <Sheet open={isFilterOpen} onOpenChange={setIsFilterOpen}>
-                <SheetTrigger asChild>
-                  <Button variant="outline" className="h-9 bg-black border-gray-800 text-gray-100 hover:bg-gray-900 hover:border-gray-700">
-                    <Filter className="h-4 w-4 mr-2" />
-                    Filters
-                    {(selectedTracks.length > 0 ||
-                      selectedCountries.length > 0 ||
-                      teamSizeRange[0] > 1 ||
-                      teamSizeRange[1] < maxTeamSize ||
-                      showUniversityOnly ||
-                      hasLinks !== "all") && (
-                      <Badge className="ml-2 bg-purple-500/20 text-purple-400 border-purple-500/50">
-                        {selectedTracks.length +
-                          selectedCountries.length +
-                          (teamSizeRange[0] > 1 || teamSizeRange[1] < maxTeamSize ? 1 : 0) +
-                          (showUniversityOnly ? 1 : 0) +
-                          (hasLinks !== "all" ? 1 : 0)}
-                      </Badge>
-                    )}
-                  </Button>
-                </SheetTrigger>
-                <SheetContent side="left" className="w-[350px] bg-black border-gray-800 overflow-hidden flex flex-col">
-                  <SheetHeader>
-                    <SheetTitle className="text-white">Filter Projects</SheetTitle>
-                    <SheetDescription className="text-gray-400">Refine your search with multiple criteria</SheetDescription>
-                  </SheetHeader>
-
-                  <div className="mt-6 space-y-6 overflow-y-auto flex-1 pr-4 scrollbar-hide">
-                    {/* Tracks Filter */}
-                    <div className="space-y-3">
-                      <h3 className="text-sm font-medium text-gray-300">Tracks</h3>
-                      <div className="space-y-2">
-                        {allTracks.map((track) => (
-                          <label key={track} className="flex items-center space-x-2 cursor-pointer hover:bg-gray-900 p-2 rounded">
-                            <Checkbox
-                              checked={selectedTracks.includes(track)}
-                              onCheckedChange={(checked) => {
-                                if (checked) {
-                                  setSelectedTracks([...selectedTracks, track]);
-                                } else {
-                                  setSelectedTracks(selectedTracks.filter((t) => t !== track));
-                                }
-                              }}
-                              className="border-gray-700"
-                            />
-                            <span className="text-sm text-gray-300">{track}</span>
-                          </label>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Countries Filter */}
-                    <div className="space-y-3">
-                      <h3 className="text-sm font-medium text-gray-300">Countries</h3>
-                      <Command className="bg-gray-950 border border-gray-800 rounded-md">
-                        <CommandInput placeholder="Search countries..." className="border-0 bg-transparent text-gray-100 placeholder-gray-500" />
-                        <CommandList className="max-h-[200px] overflow-y-auto">
-                          <CommandEmpty className="text-gray-500 text-sm py-2 text-center">No country found.</CommandEmpty>
-                          <CommandGroup>
-                            {allCountries.map((country) => (
-                              <CommandItem
-                                key={country}
-                                onSelect={() => {
-                                  setSelectedCountries((prev) => (prev.includes(country) ? prev.filter((c) => c !== country) : [...prev, country]));
-                                }}
-                                className="cursor-pointer text-gray-300 hover:bg-gray-900 hover:text-gray-100"
-                              >
-                                <Checkbox checked={selectedCountries.includes(country)} className="mr-2 border-gray-700" />
-                                {country}
-                              </CommandItem>
-                            ))}
-                          </CommandGroup>
-                        </CommandList>
-                      </Command>
-                    </div>
-
-                    {/* Team Size Filter */}
-                    <div className="space-y-3">
-                      <h3 className="text-sm font-medium text-gray-300">Team Size</h3>
-                      <div className="px-2">
-                        <Slider value={teamSizeRange} onValueChange={setTeamSizeRange} max={maxTeamSize} min={1} step={1} className="w-full" />
-                        <div className="flex justify-between mt-2">
-                          <span className="text-xs text-gray-500">{teamSizeRange[0]} members</span>
-                          <span className="text-xs text-gray-500">{teamSizeRange[1]} members</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* University Project Filter */}
-                    <div className="space-y-3">
-                      <h3 className="text-sm font-medium text-gray-300">Project Type</h3>
-                      <label className="flex items-center space-x-2 cursor-pointer hover:bg-gray-900 p-2 rounded">
-                        <Checkbox
-                          checked={showUniversityOnly}
-                          onCheckedChange={(checked) => {
-                            if (typeof checked === "boolean") {
-                              setShowUniversityOnly(checked);
-                            }
-                          }}
-                          className="border-gray-700"
-                        />
-                        <span className="text-sm text-gray-300">University Projects Only</span>
-                      </label>
-                    </div>
-
-                    {/* Links Filter */}
-                    <div className="space-y-3">
-                      <h3 className="text-sm font-medium text-gray-300">Project Links</h3>
-                      <Select value={hasLinks} onValueChange={setHasLinks}>
-                        <SelectTrigger className="h-9 bg-black border-gray-800 text-gray-100 text-sm focus:border-gray-700">
-                          <SelectValue placeholder="Filter by links" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-black border-gray-800 text-gray-100">
-                          <SelectItem value="all" className="text-gray-100 focus:bg-gray-900 focus:text-gray-100 text-xs">
-                            All Projects
-                          </SelectItem>
-                          <SelectItem value="with-links" className="text-gray-100 focus:bg-gray-900 focus:text-gray-100 text-xs">
-                            Has GitHub/Demo Links
-                          </SelectItem>
-                          <SelectItem value="without-links" className="text-gray-100 focus:bg-gray-900 focus:text-gray-100 text-xs">
-                            No Links Provided
-                          </SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    {/* Clear Filters */}
-                    <Button
-                      variant="outline"
-                      className="w-full bg-gray-900 border-gray-800 text-gray-300 hover:bg-gray-800"
-                      onClick={() => {
-                        setSelectedTracks([]);
-                        setSelectedCountries([]);
-                        setTeamSizeRange([1, maxTeamSize]);
-                        setShowUniversityOnly(false);
-                        setHasLinks("all");
-                      }}
-                    >
-                      Clear All Filters
-                    </Button>
-                  </div>
-                </SheetContent>
-              </Sheet>
-
-              <div className="flex-1 relative">
-                <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-500" />
-                <Input
-                  placeholder="Search projects by name or description..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 h-9 bg-black border-gray-800 text-gray-100 placeholder-gray-500 text-sm focus:border-gray-700"
-                />
-              </div>
-
-              <Select value={sortBy} onValueChange={setSortBy}>
-                <SelectTrigger className="h-9 w-[180px] bg-black border-gray-800 text-gray-100 text-sm focus:border-gray-700">
-                  <SelectValue placeholder="Sort by" />
-                </SelectTrigger>
-                <SelectContent className="bg-black border-gray-800 text-gray-100">
-                  <SelectItem value="random" className="text-gray-100 focus:bg-gray-900 focus:text-gray-100 text-xs">
-                    Default (Random)
-                  </SelectItem>
-                  <SelectItem value="name" className="text-gray-100 focus:bg-gray-900 focus:text-gray-100 text-xs">
-                    Name A-Z
-                  </SelectItem>
-                </SelectContent>
-              </Select>
+            <div className="bg-red-900/20 border border-red-800 rounded-lg p-4">
+              <p className="text-red-400">Error loading projects: {error}</p>
+              <Button onClick={() => window.location.reload()} className="mt-2 bg-red-900 hover:bg-red-800 text-white">
+                Retry
+              </Button>
             </div>
           </div>
+        )}
 
-          {/* Tabs Navigation */}
-          <div className="container mx-auto px-6 pb-6">
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                <TabsList className="bg-gray-900 border border-gray-800 w-fit">
-                  <TabsTrigger value="projects" className="data-[state=active]:bg-gray-800">
-                    <TableIcon className="h-4 w-4 mr-2" />
-                    Projects
-                  </TabsTrigger>
-                  <TabsTrigger value="analytics" className="data-[state=active]:bg-gray-800">
-                    <BarChart3 className="h-4 w-4 mr-2" />
-                    Analytics
-                  </TabsTrigger>
-                </TabsList>
+        {/* Main Content */}
+        {!isLoading && !error && hackathonData && (
+          <>
+            {/* Project Spotlight Modal */}
+            <ProjectSpotlight projects={filteredAndSortedProjects} isOpen={showSpotlight} onClose={() => setShowSpotlight(false)} />
 
-                <div className="flex items-center gap-3 flex-wrap">
-                  {activeTab === "projects" && sortBy === "random" && (
-                    <Button onClick={handleShuffle} variant="outline" className="h-9 bg-black border-gray-800 text-gray-100 hover:bg-gray-900 hover:border-gray-700" size="sm">
-                      <Shuffle className="h-4 w-4 mr-2" />
-                      Shuffle
-                    </Button>
-                  )}
-
-                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                    <Button
-                      onClick={() => setShowSpotlight(true)}
-                      className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white relative overflow-hidden"
-                      size="sm"
-                    >
-                      <motion.div
-                        className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0"
-                        animate={{
-                          x: ["-100%", "100%"],
-                        }}
-                        transition={{
-                          duration: 3,
-                          repeat: Infinity,
-                          repeatDelay: 2,
-                        }}
-                      />
-                      <Sparkles className="h-4 w-4 mr-2 relative z-10" />
-                      <span className="relative z-10">Project Spotlight</span>
-                    </Button>
-                  </motion.div>
+            {/* Search and Filters */}
+            <div className="container mx-auto px-6 py-4">
+              {/* Search - Full width on mobile, inline on desktop */}
+              <div className="mb-3 sm:mb-0 sm:hidden">
+                <div className="relative">
+                  <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-500" />
+                  <Input
+                    placeholder="Search projects by name or description..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-10 h-9 bg-black border-gray-800 text-gray-100 placeholder-gray-500 text-sm focus:border-gray-700"
+                  />
                 </div>
               </div>
 
-              {/* Projects Table Tab */}
-              <TabsContent value="projects" className="space-y-0">
-                <div className="bg-black rounded-lg border border-gray-800 overflow-hidden">
-                  {/* Results Count */}
-                  <div className="px-4 py-3 border-b border-gray-800">
-                    <p className="text-sm text-gray-400">
-                      Showing{" "}
-                      <span className="font-medium text-gray-200">
-                        {startIndex + 1}-{Math.min(endIndex, filteredAndSortedProjects.length)}
-                      </span>{" "}
-                      of <span className="font-medium text-gray-200">{filteredAndSortedProjects.length}</span> projects
-                      {filteredAndSortedProjects.length !== mappedProjects.length && <span className="text-gray-500"> (filtered from {mappedProjects.length} total)</span>}
-                    </p>
-                  </div>
+              <div className="flex gap-3 items-center">
+                <Sheet open={isFilterOpen} onOpenChange={setIsFilterOpen}>
+                  <SheetTrigger asChild>
+                    <Button variant="outline" className="h-9 bg-black border-gray-800 text-gray-100 hover:bg-gray-900 hover:border-gray-700">
+                      <Filter className="h-4 w-4 mr-2" />
+                      Filters
+                      {(selectedTracks.length > 0 ||
+                        selectedCountries.length > 0 ||
+                        teamSizeRange[0] > 1 ||
+                        teamSizeRange[1] < maxTeamSize ||
+                        showUniversityOnly ||
+                        hasLinks !== "all") && (
+                        <Badge className="ml-2 bg-purple-500/20 text-purple-400 border-purple-500/50">
+                          {selectedTracks.length +
+                            selectedCountries.length +
+                            (teamSizeRange[0] > 1 || teamSizeRange[1] < maxTeamSize ? 1 : 0) +
+                            (showUniversityOnly ? 1 : 0) +
+                            (hasLinks !== "all" ? 1 : 0)}
+                        </Badge>
+                      )}
+                    </Button>
+                  </SheetTrigger>
+                  <SheetContent side="left" className="w-[350px] bg-black border-gray-800 overflow-hidden flex flex-col">
+                    <SheetHeader>
+                      <SheetTitle className="text-white">Filter Projects</SheetTitle>
+                      <SheetDescription className="text-gray-400">Refine your search with multiple criteria</SheetDescription>
+                    </SheetHeader>
 
-                  <div className="overflow-x-auto">
-                    <Table>
-                      <TableHeader>
-                        <TableRow className="border-gray-800 hover:bg-transparent bg-gray-950">
-                          <TableHead className="text-gray-400 font-semibold text-xs w-[250px]">Project</TableHead>
-                          <TableHead className="text-gray-400 font-semibold text-xs w-[400px]">Description</TableHead>
-                          <TableHead className="text-gray-400 font-semibold text-xs w-[180px]">Tracks</TableHead>
-                          <TableHead className="text-gray-400 font-semibold text-xs w-[120px]">Team</TableHead>
-                          <TableHead className="text-gray-400 font-semibold text-xs w-[120px]">Location</TableHead>
-                          <TableHead className="text-gray-400 font-semibold text-xs w-[140px] text-center">Links</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        <TooltipProvider>
-                          {currentProjects.map((project, index) => (
-                            <TableRow key={project.id} className={`border-gray-800 hover:bg-gray-900 transition-colors ${index % 2 === 0 ? "bg-gray-950/50" : ""}`}>
-                              <TableCell className="py-2">
-                                <div className="flex items-center gap-2">
-                                  <div className="relative h-8 w-8 rounded-md overflow-hidden bg-gray-900 flex-shrink-0">
-                                    {project.image?.url ? (
-                                      <Image src={project.image.url} alt={`${project.name} logo`} fill className="object-cover" />
-                                    ) : (
-                                      <div className="w-full h-full bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center">
-                                        <span className="text-xs font-semibold text-gray-400">{project.name?.charAt(0)?.toUpperCase() || "?"}</span>
-                                      </div>
-                                    )}
-                                  </div>
-                                  <div>
-                                    <a
-                                      href={`https://arena.colosseum.org/projects/explore/${project.slug}`}
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                      className="font-medium text-sm text-gray-100 hover:text-purple-400 transition-colors"
-                                    >
-                                      {project.name}
-                                    </a>
-                                  </div>
-                                </div>
-                              </TableCell>
-
-                              <TableCell className="max-w-md">
-                                <Tooltip>
-                                  <TooltipTrigger asChild>
-                                    <p className="text-xs text-gray-300 line-clamp-2 cursor-help">{project.description}</p>
-                                  </TooltipTrigger>
-                                  {project.description.length > 150 && (
-                                    <TooltipContent className="max-w-lg bg-gray-950 border-gray-800 text-gray-100 p-4">
-                                      <p className="text-sm whitespace-pre-wrap">{project.description}</p>
-                                    </TooltipContent>
-                                  )}
-                                </Tooltip>
-                              </TableCell>
-
-                              <TableCell>
-                                <div className="flex flex-wrap gap-1">
-                                  {project.tracks.map((track) => (
-                                    <Badge
-                                      key={track}
-                                      variant="outline"
-                                      className={`text-[11px] px-2 py-0 ${trackColors[track as keyof typeof trackColors] || "bg-gray-500/20 text-gray-300 border-gray-500/30"}`}
-                                    >
-                                      {track}
-                                    </Badge>
-                                  ))}
-                                </div>
-                              </TableCell>
-
-                              <TableCell>
-                                <Popover>
-                                  <PopoverTrigger asChild>
-                                    <div className="flex items-center gap-1 cursor-pointer">
-                                      <div className="flex -space-x-1">
-                                        {project.teamMembers.slice(0, 3).map((member, idx) => (
-                                          <Avatar key={idx} className="h-6 w-6 border border-gray-700 hover:z-10 transition-transform hover:scale-110">
-                                            {member.avatarUrl && member.avatarUrl.trim() !== "" && <AvatarImage src={member.avatarUrl} alt={member.displayName} />}
-                                            <AvatarFallback className={`bg-gradient-to-r ${getAvatarGradient(member.displayName)} text-white text-[10px] font-semibold`}>
-                                              {member.displayName.charAt(0).toUpperCase()}
-                                            </AvatarFallback>
-                                          </Avatar>
-                                        ))}
-                                      </div>
-                                      {project.teamMembers.length > 3 && <span className="text-[10px] text-gray-400">+{project.teamMembers.length - 3}</span>}
-                                    </div>
-                                  </PopoverTrigger>
-                                  <PopoverContent className="w-64 bg-gray-950 border-gray-800 p-3" align="center">
-                                    <div className="space-y-2">
-                                      <p className="text-xs font-medium text-gray-300 mb-2">Team Members ({project.teamMembers.length})</p>
-                                      {project.teamMembers.map((member, idx) => (
-                                        <a
-                                          key={idx}
-                                          href={`https://arena.colosseum.org/profiles/${member.username}`}
-                                          target="_blank"
-                                          rel="noopener noreferrer"
-                                          className="flex items-center gap-2 p-1 rounded hover:bg-gray-900 transition-colors"
-                                        >
-                                          <Avatar className="h-8 w-8">
-                                            {member.avatarUrl && member.avatarUrl.trim() !== "" && <AvatarImage src={member.avatarUrl} alt={member.displayName} />}
-                                            <AvatarFallback className={`bg-gradient-to-r ${getAvatarGradient(member.displayName)} text-white text-xs font-semibold`}>
-                                              {member.displayName.charAt(0).toUpperCase()}
-                                            </AvatarFallback>
-                                          </Avatar>
-                                          <div className="flex-1 min-w-0">
-                                            <p className="text-xs font-medium text-gray-200 truncate">{member.displayName}</p>
-                                            <p className="text-[10px] text-gray-500">@{member.username}</p>
-                                          </div>
-                                        </a>
-                                      ))}
-                                    </div>
-                                  </PopoverContent>
-                                </Popover>
-                              </TableCell>
-
-                              <TableCell>
-                                <span className="text-xs text-gray-300">{project.country}</span>
-                              </TableCell>
-
-                              <TableCell>
-                                <div className="flex items-center justify-start gap-1">
-                                  {project.repoLink && (
-                                    <a href={project.repoLink} target="_blank" rel="noopener noreferrer">
-                                      <Button size="sm" variant="ghost" className="h-6 w-6 p-0 hover:bg-gray-900" title="GitHub Repository">
-                                        <Github className="h-3 w-3 text-gray-500" />
-                                      </Button>
-                                    </a>
-                                  )}
-                                  {project.twitterHandle && (
-                                    <a href={`https://twitter.com/${project.twitterHandle}`} target="_blank" rel="noopener noreferrer">
-                                      <Button size="sm" variant="ghost" className="h-6 w-6 p-0 hover:bg-gray-900" title="Twitter">
-                                        <Twitter className="h-3 w-3 text-gray-500" />
-                                      </Button>
-                                    </a>
-                                  )}
-                                  {project.presentationLink && (
-                                    <a href={project.presentationLink} target="_blank" rel="noopener noreferrer">
-                                      <Button size="sm" variant="ghost" className="h-6 w-6 p-0 hover:bg-gray-900" title="Presentation">
-                                        <Presentation className="h-3 w-3 text-gray-500" />
-                                      </Button>
-                                    </a>
-                                  )}
-                                  {project.technicalDemoLink && (
-                                    <a href={project.technicalDemoLink} target="_blank" rel="noopener noreferrer">
-                                      <Button size="sm" variant="ghost" className="h-6 w-6 p-0 hover:bg-gray-900" title="Technical Demo">
-                                        <Video className="h-3 w-3 text-gray-500" />
-                                      </Button>
-                                    </a>
-                                  )}
-                                </div>
-                              </TableCell>
-                            </TableRow>
+                    <div className="mt-6 space-y-6 overflow-y-auto flex-1 pr-4 scrollbar-hide">
+                      {/* Tracks Filter */}
+                      <div className="space-y-3">
+                        <h3 className="text-sm font-medium text-gray-300">Tracks</h3>
+                        <div className="space-y-2">
+                          {allTracks.map((track) => (
+                            <label key={track} className="flex items-center space-x-2 cursor-pointer hover:bg-gray-900 p-2 rounded">
+                              <Checkbox
+                                checked={selectedTracks.includes(track)}
+                                onCheckedChange={(checked) => {
+                                  if (checked) {
+                                    setSelectedTracks([...selectedTracks, track]);
+                                  } else {
+                                    setSelectedTracks(selectedTracks.filter((t) => t !== track));
+                                  }
+                                }}
+                                className="border-gray-700"
+                              />
+                              <span className="text-sm text-gray-300">{track}</span>
+                            </label>
                           ))}
-                        </TooltipProvider>
-                      </TableBody>
-                    </Table>
-                  </div>
-
-                  {/* Pagination */}
-                  <div className="flex items-center justify-between px-4 py-3 border-t border-gray-800">
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs text-gray-400">Show</span>
-                      <Select
-                        value={itemsPerPage.toString()}
-                        onValueChange={(value) => {
-                          setItemsPerPage(Number(value));
-                          setCurrentPage(1);
-                        }}
-                      >
-                        <SelectTrigger className="h-8 w-[70px] bg-black border-gray-800 text-gray-100 text-xs">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent className="bg-black border-gray-800 text-gray-100">
-                          <SelectItem value="10" className="text-gray-100 focus:bg-gray-900 focus:text-gray-100 text-xs">
-                            10
-                          </SelectItem>
-                          <SelectItem value="20" className="text-gray-100 focus:bg-gray-900 focus:text-gray-100 text-xs">
-                            20
-                          </SelectItem>
-                          <SelectItem value="50" className="text-gray-100 focus:bg-gray-900 focus:text-gray-100 text-xs">
-                            50
-                          </SelectItem>
-                          <SelectItem value="100" className="text-gray-100 focus:bg-gray-900 focus:text-gray-100 text-xs">
-                            100
-                          </SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <span className="text-xs text-gray-400">per page</span>
-                    </div>
-
-                    <div className="flex items-center gap-1">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => setCurrentPage(1)}
-                        disabled={currentPage === 1}
-                        className="h-8 w-8 p-0 hover:bg-gray-900 disabled:opacity-30"
-                      >
-                        <ChevronsLeft className="h-4 w-4 text-gray-400" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
-                        disabled={currentPage === 1}
-                        className="h-8 w-8 p-0 hover:bg-gray-900 disabled:opacity-30"
-                      >
-                        <ChevronLeft className="h-4 w-4 text-gray-400" />
-                      </Button>
-
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs text-gray-400">Page</span>
-                        <Input
-                          type="text"
-                          value={pageInput}
-                          onChange={(e) => handlePageInputChange(e.target.value)}
-                          onBlur={handlePageInputSubmit}
-                          onKeyPress={(e) => {
-                            if (e.key === "Enter") {
-                              handlePageInputSubmit();
-                            }
-                          }}
-                          className="h-8 w-14 text-center bg-black border-gray-800 text-gray-100 text-xs focus:border-gray-700"
-                        />
-                        <span className="text-xs text-gray-400">of {totalPages || 1}</span>
+                        </div>
                       </div>
 
+                      {/* Countries Filter */}
+                      <div className="space-y-3">
+                        <h3 className="text-sm font-medium text-gray-300">Countries</h3>
+                        <Command className="bg-gray-950 border border-gray-800 rounded-md">
+                          <CommandInput placeholder="Search countries..." className="border-0 bg-transparent text-gray-100 placeholder-gray-500" />
+                          <CommandList className="max-h-[200px] overflow-y-auto">
+                            <CommandEmpty className="text-gray-500 text-sm py-2 text-center">No country found.</CommandEmpty>
+                            <CommandGroup>
+                              {allCountries.map((country) => (
+                                <CommandItem
+                                  key={country}
+                                  onSelect={() => {
+                                    setSelectedCountries((prev) => (prev.includes(country) ? prev.filter((c) => c !== country) : [...prev, country]));
+                                  }}
+                                  className="cursor-pointer text-gray-300 hover:bg-gray-900 hover:text-gray-100"
+                                >
+                                  <Checkbox checked={selectedCountries.includes(country)} className="mr-2 border-gray-700" />
+                                  {country}
+                                </CommandItem>
+                              ))}
+                            </CommandGroup>
+                          </CommandList>
+                        </Command>
+                      </div>
+
+                      {/* Team Size Filter */}
+                      <div className="space-y-3">
+                        <h3 className="text-sm font-medium text-gray-300">Team Size</h3>
+                        <div className="px-2">
+                          <Slider value={teamSizeRange} onValueChange={setTeamSizeRange} max={maxTeamSize} min={1} step={1} className="w-full" />
+                          <div className="flex justify-between mt-2">
+                            <span className="text-xs text-gray-500">{teamSizeRange[0]} members</span>
+                            <span className="text-xs text-gray-500">{teamSizeRange[1]} members</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* University Project Filter */}
+                      <div className="space-y-3">
+                        <h3 className="text-sm font-medium text-gray-300">Project Type</h3>
+                        <label className="flex items-center space-x-2 cursor-pointer hover:bg-gray-900 p-2 rounded">
+                          <Checkbox
+                            checked={showUniversityOnly}
+                            onCheckedChange={(checked) => {
+                              if (typeof checked === "boolean") {
+                                setShowUniversityOnly(checked);
+                              }
+                            }}
+                            className="border-gray-700"
+                          />
+                          <span className="text-sm text-gray-300">University Projects Only</span>
+                        </label>
+                      </div>
+
+                      {/* Links Filter */}
+                      <div className="space-y-3">
+                        <h3 className="text-sm font-medium text-gray-300">Project Links</h3>
+                        <Select value={hasLinks} onValueChange={setHasLinks}>
+                          <SelectTrigger className="h-9 bg-black border-gray-800 text-gray-100 text-sm focus:border-gray-700">
+                            <SelectValue placeholder="Filter by links" />
+                          </SelectTrigger>
+                          <SelectContent className="bg-black border-gray-800 text-gray-100">
+                            <SelectItem value="all" className="text-gray-100 focus:bg-gray-900 focus:text-gray-100 text-xs">
+                              All Projects
+                            </SelectItem>
+                            <SelectItem value="with-links" className="text-gray-100 focus:bg-gray-900 focus:text-gray-100 text-xs">
+                              Has GitHub/Demo Links
+                            </SelectItem>
+                            <SelectItem value="without-links" className="text-gray-100 focus:bg-gray-900 focus:text-gray-100 text-xs">
+                              No Links Provided
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      {/* Clear Filters */}
                       <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
-                        disabled={currentPage === totalPages}
-                        className="h-8 w-8 p-0 hover:bg-gray-900 disabled:opacity-30"
+                        variant="outline"
+                        className="w-full bg-gray-900 border-gray-800 text-gray-300 hover:bg-gray-800"
+                        onClick={() => {
+                          setSelectedTracks([]);
+                          setSelectedCountries([]);
+                          setTeamSizeRange([1, maxTeamSize]);
+                          setShowUniversityOnly(false);
+                          setHasLinks("all");
+                        }}
                       >
-                        <ChevronRight className="h-4 w-4 text-gray-400" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => setCurrentPage(totalPages)}
-                        disabled={currentPage === totalPages}
-                        className="h-8 w-8 p-0 hover:bg-gray-900 disabled:opacity-30"
-                      >
-                        <ChevronsRight className="h-4 w-4 text-gray-400" />
+                        Clear All Filters
                       </Button>
                     </div>
+                  </SheetContent>
+                </Sheet>
+
+                {/* Search - Hidden on mobile (shown above), visible on desktop */}
+                <div className="hidden sm:flex flex-1 relative">
+                  <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-500" />
+                  <Input
+                    placeholder="Search projects by name or description..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-10 h-9 bg-black border-gray-800 text-gray-100 placeholder-gray-500 text-sm focus:border-gray-700"
+                  />
+                </div>
+
+                <Select value={sortBy} onValueChange={setSortBy}>
+                  <SelectTrigger className="h-9 w-[180px] bg-black border-gray-800 text-gray-100 text-sm focus:border-gray-700">
+                    <SelectValue placeholder="Sort by" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-black border-gray-800 text-gray-100">
+                    <SelectItem value="random" className="text-gray-100 focus:bg-gray-900 focus:text-gray-100 text-xs">
+                      Default (Random)
+                    </SelectItem>
+                    <SelectItem value="name" className="text-gray-100 focus:bg-gray-900 focus:text-gray-100 text-xs">
+                      Name A-Z
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            {/* Tabs Navigation */}
+            <div className="container mx-auto px-6 pb-6">
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                  <TabsList className="bg-gray-900 border border-gray-800 w-fit">
+                    <TabsTrigger value="projects" className="data-[state=active]:bg-gray-800">
+                      <TableIcon className="h-4 w-4 mr-2" />
+                      Projects
+                    </TabsTrigger>
+                    <TabsTrigger value="analytics" className="data-[state=active]:bg-gray-800">
+                      <BarChart3 className="h-4 w-4 mr-2" />
+                      Analytics
+                    </TabsTrigger>
+                  </TabsList>
+
+                  <div className="flex items-center gap-3 flex-wrap">
+                    {activeTab === "projects" && sortBy === "random" && (
+                      <Button onClick={handleShuffle} variant="outline" className="h-9 bg-black border-gray-800 text-gray-100 hover:bg-gray-900 hover:border-gray-700" size="sm">
+                        <Shuffle className="h-4 w-4 mr-2" />
+                        Shuffle
+                      </Button>
+                    )}
+
+                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                      <Button
+                        onClick={() => setShowSpotlight(true)}
+                        className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white relative overflow-hidden"
+                        size="sm"
+                      >
+                        <motion.div
+                          className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0"
+                          animate={{
+                            x: ["-100%", "100%"],
+                          }}
+                          transition={{
+                            duration: 3,
+                            repeat: Infinity,
+                            repeatDelay: 2,
+                          }}
+                        />
+                        <Sparkles className="h-4 w-4 mr-2 relative z-10" />
+                        <span className="relative z-10">Project Spotlight</span>
+                      </Button>
+                    </motion.div>
                   </div>
                 </div>
-              </TabsContent>
 
-              {/* Analytics Tab */}
-              <TabsContent value="analytics" className="space-y-0">
-                <Analytics
-                  projects={mappedProjects}
-                  filteredProjects={filteredAndSortedProjects}
-                  activeFilters={{
-                    tracks: selectedTracks,
-                    countries: selectedCountries,
-                    teamSizeRange,
-                    universityOnly: showUniversityOnly,
-                    hasLinks,
-                    searchTerm,
-                  }}
-                />
-              </TabsContent>
-            </Tabs>
+                {/* Projects Table Tab */}
+                <TabsContent value="projects" className="space-y-0">
+                  <div className="bg-black rounded-lg border border-gray-800 overflow-hidden">
+                    {/* Results Count */}
+                    <div className="px-4 py-3 border-b border-gray-800">
+                      <p className="text-sm text-gray-400">
+                        Showing{" "}
+                        <span className="font-medium text-gray-200">
+                          {startIndex + 1}-{Math.min(endIndex, filteredAndSortedProjects.length)}
+                        </span>{" "}
+                        of <span className="font-medium text-gray-200">{filteredAndSortedProjects.length}</span> projects
+                        {filteredAndSortedProjects.length !== mappedProjects.length && <span className="text-gray-500"> (filtered from {mappedProjects.length} total)</span>}
+                      </p>
+                    </div>
+
+                    <div className="overflow-x-auto">
+                      <Table>
+                        <TableHeader>
+                          <TableRow className="border-gray-800 hover:bg-transparent bg-gray-950">
+                            <TableHead className="text-gray-400 font-semibold text-xs w-[250px]">Project</TableHead>
+                            <TableHead className="text-gray-400 font-semibold text-xs w-[400px]">Description</TableHead>
+                            <TableHead className="text-gray-400 font-semibold text-xs w-[180px]">Tracks</TableHead>
+                            <TableHead className="text-gray-400 font-semibold text-xs w-[120px]">Team</TableHead>
+                            <TableHead className="text-gray-400 font-semibold text-xs w-[120px]">Location</TableHead>
+                            <TableHead className="text-gray-400 font-semibold text-xs w-[140px] text-center">Links</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          <TooltipProvider>
+                            {currentProjects.map((project, index) => (
+                              <TableRow key={project.id} className={`border-gray-800 hover:bg-gray-900 transition-colors ${index % 2 === 0 ? "bg-gray-950/50" : ""}`}>
+                                <TableCell className="py-2">
+                                  <div className="flex items-center gap-2">
+                                    <div className="relative h-8 w-8 rounded-md overflow-hidden bg-gray-900 flex-shrink-0">
+                                      {project.image?.url ? (
+                                        <Image src={project.image.url} alt={`${project.name} logo`} fill className="object-cover" />
+                                      ) : (
+                                        <div className="w-full h-full bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center">
+                                          <span className="text-xs font-semibold text-gray-400">{project.name?.charAt(0)?.toUpperCase() || "?"}</span>
+                                        </div>
+                                      )}
+                                    </div>
+                                    <div>
+                                      <a
+                                        href={`https://arena.colosseum.org/projects/explore/${project.slug}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="font-medium text-sm text-gray-100 hover:text-purple-400 transition-colors"
+                                      >
+                                        {project.name}
+                                      </a>
+                                    </div>
+                                  </div>
+                                </TableCell>
+
+                                <TableCell className="max-w-md">
+                                  <Tooltip>
+                                    <TooltipTrigger asChild>
+                                      <p className="text-xs text-gray-300 line-clamp-2 cursor-help">{project.description}</p>
+                                    </TooltipTrigger>
+                                    {project.description.length > 150 && (
+                                      <TooltipContent className="max-w-lg bg-gray-950 border-gray-800 text-gray-100 p-4">
+                                        <p className="text-sm whitespace-pre-wrap">{project.description}</p>
+                                      </TooltipContent>
+                                    )}
+                                  </Tooltip>
+                                </TableCell>
+
+                                <TableCell>
+                                  <div className="flex flex-wrap gap-1">
+                                    {project.tracks.map((track) => (
+                                      <Badge
+                                        key={track}
+                                        variant="outline"
+                                        className={`text-[11px] px-2 py-0 ${trackColors[track as keyof typeof trackColors] || "bg-gray-500/20 text-gray-300 border-gray-500/30"}`}
+                                      >
+                                        {track}
+                                      </Badge>
+                                    ))}
+                                  </div>
+                                </TableCell>
+
+                                <TableCell>
+                                  <Popover>
+                                    <PopoverTrigger asChild>
+                                      <div className="flex items-center gap-1 cursor-pointer">
+                                        <div className="flex -space-x-1">
+                                          {project.teamMembers.slice(0, 3).map((member, idx) => (
+                                            <Avatar key={idx} className="h-6 w-6 border border-gray-700 hover:z-10 transition-transform hover:scale-110">
+                                              {member.avatarUrl && member.avatarUrl.trim() !== "" && <AvatarImage src={member.avatarUrl} alt={member.displayName} />}
+                                              <AvatarFallback className={`bg-gradient-to-r ${getAvatarGradient(member.displayName)} text-white text-[10px] font-semibold`}>
+                                                {member.displayName.charAt(0).toUpperCase()}
+                                              </AvatarFallback>
+                                            </Avatar>
+                                          ))}
+                                        </div>
+                                        {project.teamMembers.length > 3 && <span className="text-[10px] text-gray-400">+{project.teamMembers.length - 3}</span>}
+                                      </div>
+                                    </PopoverTrigger>
+                                    <PopoverContent className="w-64 bg-gray-950 border-gray-800 p-3" align="center">
+                                      <div className="space-y-2">
+                                        <p className="text-xs font-medium text-gray-300 mb-2">Team Members ({project.teamMembers.length})</p>
+                                        {project.teamMembers.map((member, idx) => (
+                                          <a
+                                            key={idx}
+                                            href={`https://arena.colosseum.org/profiles/${member.username}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="flex items-center gap-2 p-1 rounded hover:bg-gray-900 transition-colors"
+                                          >
+                                            <Avatar className="h-8 w-8">
+                                              {member.avatarUrl && member.avatarUrl.trim() !== "" && <AvatarImage src={member.avatarUrl} alt={member.displayName} />}
+                                              <AvatarFallback className={`bg-gradient-to-r ${getAvatarGradient(member.displayName)} text-white text-xs font-semibold`}>
+                                                {member.displayName.charAt(0).toUpperCase()}
+                                              </AvatarFallback>
+                                            </Avatar>
+                                            <div className="flex-1 min-w-0">
+                                              <p className="text-xs font-medium text-gray-200 truncate">{member.displayName}</p>
+                                              <p className="text-[10px] text-gray-500">@{member.username}</p>
+                                            </div>
+                                          </a>
+                                        ))}
+                                      </div>
+                                    </PopoverContent>
+                                  </Popover>
+                                </TableCell>
+
+                                <TableCell>
+                                  <span className="text-xs text-gray-300">{project.country}</span>
+                                </TableCell>
+
+                                <TableCell>
+                                  <div className="flex items-center justify-start gap-1">
+                                    {project.repoLink && (
+                                      <a href={project.repoLink} target="_blank" rel="noopener noreferrer">
+                                        <Button size="sm" variant="ghost" className="h-6 w-6 p-0 hover:bg-gray-900" title="GitHub Repository">
+                                          <Github className="h-3 w-3 text-gray-500" />
+                                        </Button>
+                                      </a>
+                                    )}
+                                    {project.twitterHandle && (
+                                      <a href={`https://twitter.com/${project.twitterHandle}`} target="_blank" rel="noopener noreferrer">
+                                        <Button size="sm" variant="ghost" className="h-6 w-6 p-0 hover:bg-gray-900" title="Twitter">
+                                          <Twitter className="h-3 w-3 text-gray-500" />
+                                        </Button>
+                                      </a>
+                                    )}
+                                    {project.presentationLink && (
+                                      <a href={project.presentationLink} target="_blank" rel="noopener noreferrer">
+                                        <Button size="sm" variant="ghost" className="h-6 w-6 p-0 hover:bg-gray-900" title="Presentation">
+                                          <Presentation className="h-3 w-3 text-gray-500" />
+                                        </Button>
+                                      </a>
+                                    )}
+                                    {project.technicalDemoLink && (
+                                      <a href={project.technicalDemoLink} target="_blank" rel="noopener noreferrer">
+                                        <Button size="sm" variant="ghost" className="h-6 w-6 p-0 hover:bg-gray-900" title="Technical Demo">
+                                          <Video className="h-3 w-3 text-gray-500" />
+                                        </Button>
+                                      </a>
+                                    )}
+                                  </div>
+                                </TableCell>
+                              </TableRow>
+                            ))}
+                          </TooltipProvider>
+                        </TableBody>
+                      </Table>
+                    </div>
+
+                    {/* Pagination */}
+                    <div className="flex items-center justify-between px-4 py-3 border-t border-gray-800">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs text-gray-400">Show</span>
+                        <Select
+                          value={itemsPerPage.toString()}
+                          onValueChange={(value) => {
+                            setItemsPerPage(Number(value));
+                            setCurrentPage(1);
+                          }}
+                        >
+                          <SelectTrigger className="h-8 w-[70px] bg-black border-gray-800 text-gray-100 text-xs">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent className="bg-black border-gray-800 text-gray-100">
+                            <SelectItem value="10" className="text-gray-100 focus:bg-gray-900 focus:text-gray-100 text-xs">
+                              10
+                            </SelectItem>
+                            <SelectItem value="20" className="text-gray-100 focus:bg-gray-900 focus:text-gray-100 text-xs">
+                              20
+                            </SelectItem>
+                            <SelectItem value="50" className="text-gray-100 focus:bg-gray-900 focus:text-gray-100 text-xs">
+                              50
+                            </SelectItem>
+                            <SelectItem value="100" className="text-gray-100 focus:bg-gray-900 focus:text-gray-100 text-xs">
+                              100
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <span className="text-xs text-gray-400">per page</span>
+                      </div>
+
+                      <div className="flex items-center gap-1">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => setCurrentPage(1)}
+                          disabled={currentPage === 1}
+                          className="h-8 w-8 p-0 hover:bg-gray-900 disabled:opacity-30"
+                        >
+                          <ChevronsLeft className="h-4 w-4 text-gray-400" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+                          disabled={currentPage === 1}
+                          className="h-8 w-8 p-0 hover:bg-gray-900 disabled:opacity-30"
+                        >
+                          <ChevronLeft className="h-4 w-4 text-gray-400" />
+                        </Button>
+
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs text-gray-400">Page</span>
+                          <Input
+                            type="text"
+                            value={pageInput}
+                            onChange={(e) => handlePageInputChange(e.target.value)}
+                            onBlur={handlePageInputSubmit}
+                            onKeyPress={(e) => {
+                              if (e.key === "Enter") {
+                                handlePageInputSubmit();
+                              }
+                            }}
+                            className="h-8 w-14 text-center bg-black border-gray-800 text-gray-100 text-xs focus:border-gray-700"
+                          />
+                          <span className="text-xs text-gray-400">of {totalPages || 1}</span>
+                        </div>
+
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
+                          disabled={currentPage === totalPages}
+                          className="h-8 w-8 p-0 hover:bg-gray-900 disabled:opacity-30"
+                        >
+                          <ChevronRight className="h-4 w-4 text-gray-400" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => setCurrentPage(totalPages)}
+                          disabled={currentPage === totalPages}
+                          className="h-8 w-8 p-0 hover:bg-gray-900 disabled:opacity-30"
+                        >
+                          <ChevronsRight className="h-4 w-4 text-gray-400" />
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </TabsContent>
+
+                {/* Analytics Tab */}
+                <TabsContent value="analytics" className="space-y-0">
+                  <Analytics
+                    projects={mappedProjects}
+                    filteredProjects={filteredAndSortedProjects}
+                    activeFilters={{
+                      tracks: selectedTracks,
+                      countries: selectedCountries,
+                      teamSizeRange,
+                      universityOnly: showUniversityOnly,
+                      hasLinks,
+                      searchTerm,
+                    }}
+                  />
+                </TabsContent>
+              </Tabs>
+            </div>
+          </>
+        )}
+      </div>
+
+      {/* Footer */}
+      {/* <footer className="border-t border-gray-800 bg-black mt-auto">
+        <div className="container mx-auto px-6 py-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-xs text-gray-500">
+            <span>© {new Date().getFullYear()}</span>
+            <a href="https://frontseat.co" target="_blank" rel="noopener noreferrer" className="hover:text-gray-300 transition-colors">
+              frontseat.co
+            </a>
           </div>
-        </>
-      )}
+        </div>
+      </footer> */}
     </div>
   );
 }

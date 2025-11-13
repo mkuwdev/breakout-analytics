@@ -20,13 +20,13 @@ export function HackathonSelector() {
 
   return (
     <Select value={currentSlug || "cypherpunk"} onValueChange={handleHackathonChange}>
-      <SelectTrigger className="h-9 w-[180px] bg-black border-gray-800 text-gray-100 text-sm focus:border-gray-700">
+      <SelectTrigger className="h-8 sm:h-9 w-[140px] sm:w-[180px] bg-black border-gray-800 text-gray-100 text-xs sm:text-sm focus:border-gray-700">
         <SelectValue>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 sm:gap-2">
             {currentHackathon ? (
               <>
-                <span>{currentHackathon.emoji}</span>
-                <span>{currentHackathon.name}</span>
+                <span className="text-sm sm:text-base">{currentHackathon.emoji}</span>
+                <span className="truncate">{currentHackathon.name}</span>
               </>
             ) : (
               <span>Select Hackathon</span>
