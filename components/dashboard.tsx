@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,6 +29,9 @@ import {
   TableIcon,
   Sparkles,
   Shuffle,
+  Link as LinkIcon,
+  Copy,
+  Check,
 } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -43,6 +47,7 @@ import Image from "next/image";
 import Analytics from "@/app/analytics";
 import { HackathonSelector } from "./hackathon-selector";
 import { AnnouncementBanner } from "./announcement-banner";
+import { useToast } from "@/hooks/use-toast";
 import type { Hackathon } from "@/lib/hackathons";
 
 // TypeScript interfaces
@@ -416,7 +421,61 @@ interface DashboardProps {
   hackathon: Hackathon;
 }
 
+// Helper functions to serialize/deserialize filters to/from URL params
+const serializeFilters = (filters: {
+  searchTerm: string;
+  selectedTracks: string[];
+  selectedCountries: string[];
+  sortBy: string;
+  teamSizeRange: number[];
+  showUniversityOnly: boolean;
+  hasLinks: string;
+  activeTab: string;
+  maxTeamSize: number;
+}) => {
+  const params = new URLSearchParams();
+  
+  if (filters.searchTerm) params.set("q", filters.searchTerm);
+  if (filters.selectedTracks.length > 0) params.set("tracks", filters.selectedTracks.join(","));
+  if (filters.selectedCountries.length > 0) params.set("countries", filters.selectedCountries.join(","));
+  if (filters.sortBy !== "random") params.set("sort", filters.sortBy);
+  // Only include teamSize in URL if it's not the full range (allowing all team sizes)
+  if (filters.teamSizeRange[0] !== 1 || filters.teamSizeRange[1] !== filters.maxTeamSize) {
+    params.set("teamSize", `${filters.teamSizeRange[0]}-${filters.teamSizeRange[1]}`);
+  }
+  if (filters.showUniversityOnly) params.set("university", "true");
+  if (filters.hasLinks !== "all") params.set("links", filters.hasLinks);
+  if (filters.activeTab !== "projects") params.set("tab", filters.activeTab);
+  
+  return params.toString();
+};
+
+const deserializeFilters = (searchParams: URLSearchParams, maxTeamSize: number) => {
+  const filters = {
+    searchTerm: searchParams.get("q") || "",
+    selectedTracks: searchParams.get("tracks")?.split(",").filter(Boolean) || [],
+    selectedCountries: searchParams.get("countries")?.split(",").filter(Boolean) || [],
+    sortBy: searchParams.get("sort") || "random",
+    teamSizeRange: (() => {
+      const teamSize = searchParams.get("teamSize");
+      if (teamSize) {
+        const [min, max] = teamSize.split("-").map(Number);
+        if (!isNaN(min) && !isNaN(max)) return [min, max];
+      }
+      // If no teamSize in URL, return full range (all team sizes)
+      return [1, maxTeamSize];
+    })(),
+    showUniversityOnly: searchParams.get("university") === "true",
+    hasLinks: searchParams.get("links") || "all",
+    activeTab: searchParams.get("tab") || "projects",
+  };
+  return filters;
+};
+
 export default function Dashboard({ hackathon }: DashboardProps) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedTracks, setSelectedTracks] = useState<string[]>([]);
   const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
@@ -435,6 +494,8 @@ export default function Dashboard({ hackathon }: DashboardProps) {
   const [activeTab, setActiveTab] = useState("projects");
   const [showSpotlight, setShowSpotlight] = useState(false);
   const [shuffledProjects, setShuffledProjects] = useState<Project[]>([]);
+  const [linkCopied, setLinkCopied] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   // Fisher-Yates shuffle algorithm
   const shuffleArray = <T,>(array: T[]): T[] => {
@@ -453,6 +514,29 @@ export default function Dashboard({ hackathon }: DashboardProps) {
       setCurrentPage(1);
     }
   };
+
+  // Initialize filters from URL params on mount (after data is loaded)
+  useEffect(() => {
+    if (!isInitialized && searchParams && hackathonData) {
+      // Calculate maxTeamSize from the data
+      const projects = hackathonData.projects || [];
+      const maxTeam = projects.length > 0 
+        ? Math.max(...projects.map((p: Project) => p.teamMembers.length), 10)
+        : 10;
+      
+      const filters = deserializeFilters(searchParams, maxTeam);
+      setSearchTerm(filters.searchTerm);
+      setSelectedTracks(filters.selectedTracks);
+      setSelectedCountries(filters.selectedCountries);
+      setSortBy(filters.sortBy);
+      // Set team size range (will be full range if not in URL)
+      setTeamSizeRange(filters.teamSizeRange);
+      setShowUniversityOnly(filters.showUniversityOnly);
+      setHasLinks(filters.hasLinks);
+      setActiveTab(filters.activeTab);
+      setIsInitialized(true);
+    }
+  }, [searchParams, isInitialized, hackathonData]);
 
   // Fetch data on component mount
   useEffect(() => {
@@ -476,8 +560,12 @@ export default function Dashboard({ hackathon }: DashboardProps) {
         if (data.projects.length > 0) {
           const maxTeam = Math.max(...data.projects.map((p: Project) => p.teamMembers.length));
           const maxLike = Math.max(...data.projects.map((p: Project) => p.likes || 0));
-          setTeamSizeRange([1, maxTeam]);
           setLikesRange([0, maxLike]);
+          // Only update team size range if not set from URL params
+          // Default to full range (all team sizes) if not in URL
+          if (!searchParams?.get("teamSize")) {
+            setTeamSizeRange([1, maxTeam]);
+          }
         }
       } catch (err) {
         setError(err instanceof Error ? err.message : "An error occurred");
@@ -487,12 +575,87 @@ export default function Dashboard({ hackathon }: DashboardProps) {
     };
 
     fetchProjects();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hackathon.id]);
 
   // Sync page input with current page
   useEffect(() => {
     setPageInput(currentPage.toString());
   }, [currentPage]);
+
+  // Update URL when filters change (debounced)
+  useEffect(() => {
+    if (!isInitialized || !hackathonData) return; // Don't update URL on initial load
+    
+    // Calculate maxTeamSize
+    const projects = hackathonData.projects || [];
+    const maxTeam = projects.length > 0 
+      ? Math.max(...projects.map((p: Project) => p.teamMembers.length), 10)
+      : 10;
+    
+    const timeoutId = setTimeout(() => {
+      const params = serializeFilters({
+        searchTerm,
+        selectedTracks,
+        selectedCountries,
+        sortBy,
+        teamSizeRange,
+        showUniversityOnly,
+        hasLinks,
+        activeTab,
+        maxTeamSize: maxTeam,
+      });
+      
+      const newUrl = params ? `/${hackathon.slug}?${params}` : `/${hackathon.slug}`;
+      router.replace(newUrl, { scroll: false });
+    }, 500); // Debounce for 500ms
+
+    return () => clearTimeout(timeoutId);
+  }, [searchTerm, selectedTracks, selectedCountries, sortBy, teamSizeRange, showUniversityOnly, hasLinks, activeTab, isInitialized, hackathon.slug, router, hackathonData]);
+
+  // Copy link function
+  const handleCopyLink = useCallback(() => {
+    if (!hackathonData) return;
+    
+    // Calculate maxTeamSize
+    const projects = hackathonData.projects || [];
+    const maxTeam = projects.length > 0 
+      ? Math.max(...projects.map((p: Project) => p.teamMembers.length), 10)
+      : 10;
+    
+    const params = serializeFilters({
+      searchTerm,
+      selectedTracks,
+      selectedCountries,
+      sortBy,
+      teamSizeRange,
+      showUniversityOnly,
+      hasLinks,
+      activeTab,
+      maxTeamSize: maxTeam,
+    });
+    
+    const url = typeof window !== "undefined" 
+      ? `${window.location.origin}/${hackathon.slug}${params ? `?${params}` : ""}`
+      : "";
+    
+    if (url) {
+      navigator.clipboard.writeText(url).then(() => {
+        setLinkCopied(true);
+        toast({
+          title: "Link copied!",
+          description: "Share this link to preserve your filters.",
+        });
+        setTimeout(() => setLinkCopied(false), 2000);
+      }).catch(() => {
+        toast({
+          title: "Failed to copy",
+          description: "Please try again.",
+          variant: "destructive",
+        });
+      });
+    }
+  }, [searchTerm, selectedTracks, selectedCountries, sortBy, teamSizeRange, showUniversityOnly, hasLinks, activeTab, hackathon.slug, hackathonData, toast]);
 
   // Map tracks for consistency
   const mappedProjects = useMemo(() => {
@@ -843,6 +1006,34 @@ export default function Dashboard({ hackathon }: DashboardProps) {
                         Shuffle
                       </Button>
                     )}
+
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            onClick={handleCopyLink}
+                            variant="outline"
+                            className="h-9 bg-black border-gray-800 text-gray-100 hover:bg-gray-900 hover:border-gray-700"
+                            size="sm"
+                          >
+                            {linkCopied ? (
+                              <>
+                                <Check className="h-4 w-4 mr-2" />
+                                Copied!
+                              </>
+                            ) : (
+                              <>
+                                <LinkIcon className="h-4 w-4 mr-2" />
+                                Copy Link
+                              </>
+                            )}
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent className="bg-gray-950 border-gray-800 text-gray-100">
+                          <p>Copy a shareable link with your current filters</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
 
                     <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                       <Button
