@@ -9,12 +9,20 @@ export interface Hackathon {
 
 export const hackathons: Hackathon[] = [
   {
+    id: 6,
+    slug: "frontier",
+    name: "Frontier",
+    emoji: "🏔️",
+    description: "The latest Colosseum hackathon",
+    isDefault: true,
+  },
+  {
     id: 5,
     slug: "cypherpunk",
     name: "Cypherpunk",
     emoji: "🔐",
-    description: "The latest Colosseum hackathon",
-    isDefault: true,
+    description: "The Colosseum Cypherpunk Hackathon",
+    isDefault: false,
   },
   {
     id: 4,

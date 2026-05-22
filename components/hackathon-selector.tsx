@@ -10,7 +10,7 @@ export function HackathonSelector() {
 
   // Extract current hackathon slug from pathname
   const pathSegments = pathname?.split("/").filter(Boolean) || [];
-  const currentSlug = pathSegments[0] || "cypherpunk";
+  const currentSlug = pathSegments[0] || "frontier";
 
   const handleHackathonChange = (slug: string) => {
     router.push(`/${slug}`);
@@ -19,7 +19,7 @@ export function HackathonSelector() {
   const currentHackathon = currentSlug ? hackathons.find((h) => h.slug === currentSlug) : null;
 
   return (
-    <Select value={currentSlug || "cypherpunk"} onValueChange={handleHackathonChange}>
+    <Select value={currentSlug || "frontier"} onValueChange={handleHackathonChange}>
       <SelectTrigger className="h-8 sm:h-9 w-[140px] sm:w-[180px] bg-black border-gray-800 text-gray-100 text-xs sm:text-sm focus:border-gray-700">
         <SelectValue>
           <div className="flex items-center gap-1 sm:gap-2">

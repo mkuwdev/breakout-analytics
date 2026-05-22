@@ -70,7 +70,7 @@ export default function Analytics({ projects, filteredProjects, activeFilters }:
 
   // Calculate metrics
   const metrics = useMemo(() => {
-    const totalParticipants = new Set(filteredProjects.flatMap((p) => p.teamMembers.map((m: any) => m.id))).size;
+    const totalParticipants = new Set(filteredProjects.flatMap((p) => p.teamMembers.map((m: any) => m.username))).size;
     const avgTeamSize = filteredProjects.length > 0 ? (filteredProjects.reduce((sum, p) => sum + p.teamMembers.length, 0) / filteredProjects.length).toFixed(1) : 0;
     const universityProjects = filteredProjects.filter((p) => p.isUniversityProject).length;
     const totalComments = filteredProjects.reduce((sum, p) => sum + p.comments, 0);
@@ -85,7 +85,7 @@ export default function Analytics({ projects, filteredProjects, activeFilters }:
     };
   }, [filteredProjects]);
 
-  // Track distribution data
+  // Track distribution data — collapse slices under 3% into "Other" to keep the pie readable.
   const trackData = useMemo(() => {
     const trackCounts: Record<string, number> = {};
     filteredProjects.forEach((project) => {
@@ -94,9 +94,20 @@ export default function Analytics({ projects, filteredProjects, activeFilters }:
       });
     });
 
-    return Object.entries(trackCounts)
+    const entries = Object.entries(trackCounts)
       .map(([name, value]) => ({ name, value }))
       .sort((a, b) => b.value - a.value);
+
+    const total = entries.reduce((sum, e) => sum + e.value, 0);
+    if (total === 0) return entries;
+
+    const threshold = total * 0.03;
+    const major = entries.filter((e) => e.value >= threshold);
+    const minor = entries.filter((e) => e.value < threshold);
+    if (minor.length <= 1) return entries;
+
+    const otherValue = minor.reduce((sum, e) => sum + e.value, 0);
+    return [...major, { name: "Other", value: otherValue }];
   }, [filteredProjects]);
 
   // Country distribution data (top 10)
@@ -154,7 +165,7 @@ export default function Analytics({ projects, filteredProjects, activeFilters }:
   // Calculate insights comparing filtered vs all projects
   const insights = useMemo(() => {
     // Overall metrics
-    const allParticipants = new Set(projects.flatMap((p) => p.teamMembers.map((m: any) => m.id))).size;
+    const allParticipants = new Set(projects.flatMap((p) => p.teamMembers.map((m: any) => m.username))).size;
     const allAvgTeamSize = projects.length > 0 ? projects.reduce((sum, p) => sum + p.teamMembers.length, 0) / projects.length : 0;
     const allAvgComments = projects.length > 0 ? projects.reduce((sum, p) => sum + p.comments, 0) / projects.length : 0;
     const allUniversityRate = projects.length > 0 ? ((projects.filter((p) => p.isUniversityProject).length / projects.length) * 100).toFixed(1) : 0;
@@ -333,14 +344,16 @@ export default function Analytics({ projects, filteredProjects, activeFilters }:
           </CardContent>
         </Card>
 
-        <Card className="bg-gray-950 border-gray-800">
-          <CardHeader className="pb-1 pt-3 px-3">
-            <CardTitle className="text-xs font-medium text-gray-300">University Projects</CardTitle>
-          </CardHeader>
-          <CardContent className="px-3 pb-3">
-            <div className="text-xl font-bold text-white">{metrics.universityProjects}</div>
-          </CardContent>
-        </Card>
+        {metrics.universityProjects > 0 && (
+          <Card className="bg-gray-950 border-gray-800">
+            <CardHeader className="pb-1 pt-3 px-3">
+              <CardTitle className="text-xs font-medium text-gray-300">University Projects</CardTitle>
+            </CardHeader>
+            <CardContent className="px-3 pb-3">
+              <div className="text-xl font-bold text-white">{metrics.universityProjects}</div>
+            </CardContent>
+          </Card>
+        )}
 
         <Card className="bg-gray-950 border-gray-800">
           <CardHeader className="pb-1 pt-3 px-3">
@@ -361,7 +374,7 @@ export default function Analytics({ projects, filteredProjects, activeFilters }:
             <CardDescription className="text-xs text-gray-500">Projects with multiple tracks are counted in each track</CardDescription>
           </CardHeader>
           <CardContent className="pb-4">
-            <ResponsiveContainer width="100%" height={250}>
+            <ResponsiveContainer width="100%" height={200}>
               <PieChart>
                 <Pie
                   data={trackData}
@@ -383,15 +396,14 @@ export default function Analytics({ projects, filteredProjects, activeFilters }:
                     outerRadius: number;
                     percent: number;
                   }) => {
+                    if (percent < 0.05) return null; // Hide labels for small slices
                     const RADIAN = Math.PI / 180;
-                    const radius = innerRadius + (outerRadius - innerRadius) * 1.3;
+                    const radius = innerRadius + (outerRadius - innerRadius) * 0.6;
                     const x = cx + radius * Math.cos(-midAngle * RADIAN);
                     const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
-                    if (percent < 0.05) return null; // Hide labels for small slices
-
                     return (
-                      <text x={x} y={y} fill="#9ca3af" textAnchor={x > cx ? "start" : "end"} dominantBaseline="central" className="text-xs">
+                      <text x={x} y={y} fill="#ffffff" textAnchor="middle" dominantBaseline="central" className="text-xs font-medium" style={{ pointerEvents: "none" }}>
                         {`${(percent * 100).toFixed(0)}%`}
                       </text>
                     );
@@ -414,18 +426,19 @@ export default function Analytics({ projects, filteredProjects, activeFilters }:
                   itemStyle={{ color: "#e5e7eb", fontSize: "12px" }}
                   formatter={(value: number, name: string) => [`${value} projects`, name]}
                 />
-                <Legend
-                  verticalAlign="bottom"
-                  height={36}
-                  iconType="circle"
-                  wrapperStyle={{
-                    paddingTop: "10px",
-                    fontSize: "12px",
-                  }}
-                  formatter={(value: string) => <span style={{ color: "#9ca3af" }}>{value}</span>}
-                />
               </PieChart>
             </ResponsiveContainer>
+            <div className="mt-3 flex flex-wrap gap-x-3 gap-y-1.5 text-xs">
+              {trackData.map((entry, index) => (
+                <div key={entry.name} className="flex items-center gap-1.5 min-w-0">
+                  <span
+                    className="inline-block h-2 w-2 rounded-full flex-shrink-0"
+                    style={{ backgroundColor: CHART_COLORS[index % CHART_COLORS.length] }}
+                  />
+                  <span className="text-gray-400 truncate">{entry.name}</span>
+                </div>
+              ))}
+            </div>
           </CardContent>
         </Card>
 

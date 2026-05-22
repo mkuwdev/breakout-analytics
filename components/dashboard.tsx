@@ -46,7 +46,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Analytics from "@/app/analytics";
 import { HackathonSelector } from "./hackathon-selector";
-import { AnnouncementBanner } from "./announcement-banner";
 import { useToast } from "@/hooks/use-toast";
 import type { Hackathon } from "@/lib/hackathons";
 
@@ -114,6 +113,7 @@ const trackColors = {
 // Helper function to map track names
 const mapTrackName = (track: string) => {
   if (track === "Consumer Apps") return "Consumer";
+  if (track === "Real World Assets (RWA)" || track === "Real World Assets" || track === "Real World Asset (RWA)") return "RWA";
   return track;
 };
 
@@ -419,6 +419,7 @@ const ProjectSpotlight = ({ projects, isOpen, onClose }: ProjectSpotlightProps) 
 
 interface DashboardProps {
   hackathon: Hackathon;
+  initialData: HackathonData;
 }
 
 // Helper functions to serialize/deserialize filters to/from URL params
@@ -472,21 +473,27 @@ const deserializeFilters = (searchParams: URLSearchParams, maxTeamSize: number) 
   return filters;
 };
 
-export default function Dashboard({ hackathon }: DashboardProps) {
+export default function Dashboard({ hackathon, initialData }: DashboardProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();
+  const initialMaxTeam = initialData.projects.length > 0
+    ? Math.max(...initialData.projects.map((p: Project) => p.teamMembers.length), 1)
+    : 10;
+  const initialMaxLikes = initialData.projects.length > 0
+    ? Math.max(...initialData.projects.map((p: Project) => p.likes || 0))
+    : 100;
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedTracks, setSelectedTracks] = useState<string[]>([]);
   const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState("random");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(20);
-  const [teamSizeRange, setTeamSizeRange] = useState([1, 10]);
-  const [likesRange, setLikesRange] = useState([0, 100]);
+  const [teamSizeRange, setTeamSizeRange] = useState([1, initialMaxTeam]);
+  const [likesRange, setLikesRange] = useState([0, initialMaxLikes]);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [hackathonData, setHackathonData] = useState<HackathonData | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hackathonData, setHackathonData] = useState<HackathonData | null>(initialData);
   const [error, setError] = useState<string | null>(null);
   const [pageInput, setPageInput] = useState("1");
   const [showUniversityOnly, setShowUniversityOnly] = useState(false);
@@ -538,45 +545,21 @@ export default function Dashboard({ hackathon }: DashboardProps) {
     }
   }, [searchParams, isInitialized, hackathonData]);
 
-  // Fetch data on component mount
+  // Keep state in sync when navigating to a different hackathon (server provides fresh initialData).
   useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        setIsLoading(true);
-        // Add cache-busting timestamp and hackathon ID
-        const response = await fetch(`/api/projects?hackathonId=${hackathon.id}&t=${Date.now()}`, {
-          cache: "no-store",
-          headers: {
-            "Cache-Control": "no-cache",
-          },
-        });
-        if (!response.ok) {
-          throw new Error("Failed to fetch projects");
-        }
-        const data = await response.json();
-        setHackathonData(data);
-
-        // Update the initial ranges based on fetched data
-        if (data.projects.length > 0) {
-          const maxTeam = Math.max(...data.projects.map((p: Project) => p.teamMembers.length));
-          const maxLike = Math.max(...data.projects.map((p: Project) => p.likes || 0));
-          setLikesRange([0, maxLike]);
-          // Only update team size range if not set from URL params
-          // Default to full range (all team sizes) if not in URL
-          if (!searchParams?.get("teamSize")) {
-            setTeamSizeRange([1, maxTeam]);
-          }
-        }
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "An error occurred");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchProjects();
+    setHackathonData(initialData);
+    const maxTeam = initialData.projects.length > 0
+      ? Math.max(...initialData.projects.map((p: Project) => p.teamMembers.length), 1)
+      : 10;
+    const maxLike = initialData.projects.length > 0
+      ? Math.max(...initialData.projects.map((p: Project) => p.likes || 0))
+      : 100;
+    setLikesRange([0, maxLike]);
+    if (!searchParams?.get("teamSize")) {
+      setTeamSizeRange([1, maxTeam]);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hackathon.id]);
+  }, [initialData]);
 
   // Sync page input with current page
   useEffect(() => {
@@ -742,9 +725,6 @@ export default function Dashboard({ hackathon }: DashboardProps) {
 
   return (
     <div className="min-h-screen bg-black text-gray-100 flex flex-col">
-      {/* Announcement Banner */}
-      <AnnouncementBanner />
-
       {/* Header */}
       <div className="border-b border-gray-800 bg-black">
         <div className="container mx-auto px-3 sm:px-6 py-3 sm:py-4">

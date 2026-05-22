@@ -1,7 +1,10 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getHackathonBySlug, hackathons } from "@/lib/hackathons";
+import { fetchHackathonProjects } from "@/lib/projects";
 import Dashboard from "@/components/dashboard";
+
+export const revalidate = 600;
 
 interface PageProps {
   params: Promise<{
@@ -10,7 +13,6 @@ interface PageProps {
 }
 
 export async function generateStaticParams() {
-  // Generate static params for all hackathons
   return hackathons.map((hackathon) => ({
     hackathon: hackathon.slug,
   }));
@@ -26,7 +28,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     };
   }
 
-  // Use absolute URL for OG image in production
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://colosseum.frontseat.co";
   const ogImageUrl = `${baseUrl}/og-image.png`;
 
@@ -66,6 +67,7 @@ export default async function HackathonPage({ params }: PageProps) {
     notFound();
   }
 
-  return <Dashboard hackathon={hackathon} />;
-}
+  const initialData = await fetchHackathonProjects(hackathon.id);
 
+  return <Dashboard hackathon={hackathon} initialData={initialData} />;
+}
